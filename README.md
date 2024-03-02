@@ -12,7 +12,7 @@ So I made this side project that automatically manages variables, memory, and th
 - Error handling and checking, if you want, there are automatic memory checks, that you can enable or disable, which prevents basic mistakes like writing to a variable that doesn't exist, or not finding the shader file, or Vulkan not being supported. All of that without needing to mess with Validation Layers.
 - Can also be used with C++
 - No need to create a window, or use a library like GLFW, it's meant to be used without a window, and it's very lightweight.
-
+- Can work with any shader language you like, I chose GLSL in the examples simply because it's the closest to C in terms of syntax
 ## Disadvantages
 - Not very flexible, as it's meant to be simple, it doesn't support many features of Vulkan, and it's not meant to be used for complex graphics, only for compute shaders.
 
