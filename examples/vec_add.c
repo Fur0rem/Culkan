@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../culkan.h"
+#include "../src/culkan.h"
 
 
 int main() {
