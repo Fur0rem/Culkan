@@ -10,6 +10,8 @@ So I made this side project that automatically manages variables, memory, and th
 - Very easy to use, and doesn't require much code to get started. I would say it's about as hard as CUDA, so quite easy if you have a basic understanding of parallel programming.
 - Fast & Portable, because so is Vulkan.
 - Error handling and checking, if you want, there are automatic memory checks, that you can enable or disable, which prevents basic mistakes like writing to a variable that doesn't exist, or not finding the shader file, or Vulkan not being supported. All of that without needing to mess with Validation Layers.
+- Can also be used with C++
+- No need to create a window, or use a library like GLFW, it's meant to be used without a window, and it's very lightweight.
 
 ## Disadvantages
 - Not very flexible, as it's meant to be simple, it doesn't support many features of Vulkan, and it's not meant to be used for complex graphics, only for compute shaders.
@@ -39,6 +41,6 @@ Should be able to run on any OS with these requirements, I tested it on Linux wi
 I am a bit stupid, so if the code is a bit stupid, that's why.
 Clang tidy is mad at me for a few reasons, I'll have to fix that. FIXME
 The casing and naming style may change in the future, because I'm not sure on if I want to follow Vulkan's naming style or dissociate from it, but it shouldn't be too bad to change it in your code if you ever use this.
-I promise I will do better documentation and examples in the future, and clean up some stuff. But I don't want to be too off-schedule with my main project, and I will make it compatible with C++ soon enough.
+I promise I will do better documentation and examples in the future, and clean up some stuff. But I don't want to be too off-schedule with my main project.
 I learned a bit about Vulkan, so that's cool.
 If this is useful to you, then I'm happy :D

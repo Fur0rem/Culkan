@@ -1,6 +1,7 @@
 #ifndef CULKAN_H
 #define CULKAN_H
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vulkan/vulkan.h>
@@ -40,12 +41,14 @@ typedef struct {
 		__checkCulkanResult((variable) == NULL ? (CulkanResult){VK_ERROR_OUT_OF_HOST_MEMORY, NO_ERROR} : (CulkanResult){VK_SUCCESS, NO_ERROR},       \
 							__FILE__, __LINE__);
 // FIXME : WHAT ON PEUT FAIRE CA EN C???????
-#define culkanMalloc(size)                                                                                                                           \
-	({                                                                                                                                               \
-		void* ptr = malloc(size);                                                                                                                    \
-		culkanCheckAllocation(ptr);                                                                                                                  \
-		ptr;                                                                                                                                         \
+// Warning that type* should be enclosed in parentheses but if i do it C++ will cry
+#define culkanMalloc(type, nbElems) 																											   \
+	({\
+		type* ptr = (type*)malloc(sizeof(type) * (nbElems));																					   \
+		culkanCheckAllocation(ptr); 																											   \
+		ptr; 																																	   \
 	})
+
 const char* culkanErrCodeToString(CulkanErrCodes code);
 const char* vkResultToString(VkResult result);
 void __checkCulkanResult(CulkanResult result, const char* file, int line);
@@ -78,10 +81,6 @@ typedef struct {
 	void* dataVar;
 } GPUVariable;
 
-typedef struct {
-	size_t size;
-	VkBufferUsageFlags type;
-} CulkanBinding;
 
 typedef enum {
 	STORAGE_BUFFER = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
@@ -90,7 +89,12 @@ typedef enum {
 } CulkanBindingType;
 
 typedef struct {
-	int bindingCount;
+	size_t size;
+	CulkanBindingType type;
+} CulkanBinding;
+
+typedef struct {
+	uint32_t bindingCount;
 	CulkanBinding* bindings;
 } CulkanLayout;
 
@@ -133,7 +137,7 @@ typedef struct {
 	VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo;
 	VkPipelineLayout pipelineLayout;
 
-	long fileSize;
+	size_t fileSize;
 	char* fileName;
 	uint32_t* shaderBuffer;
 
@@ -157,7 +161,7 @@ typedef struct {
 	VkCommandBuffer* commandBuffers;
 } Culkan;
 
-uint32_t* culkanOpenShader(const char* filename, long* fileSize, Culkan* culkan);
+uint32_t* culkanOpenShader(const char* filename, size_t* fileSize, Culkan* culkan);
 
 /// GPU GPUVariables
 void freeGPUVariableData(GPUVariable* variable);
@@ -176,7 +180,7 @@ void culkanSetup(Culkan* culkan);
 void culkanRun(Culkan* culkan);
 
 //. Memory
-void culkanAlloc(Culkan* culkan);
+void culkanGPUAlloc(Culkan* culkan);
 void culkanDestroy(Culkan* culkan);
 
 #endif // CULKAN_H
