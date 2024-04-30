@@ -7,16 +7,14 @@
 #include <sys/types.h>
 #include <vulkan/vulkan_core.h>
 
-// TODO : fix variable cases and make it compatible with g++
-
 const char* culkanErrCodeToString(CulkanErrCodes code) {
 	switch (code) {
 		case NO_ERROR:
 			return "No error";
 		case OUT_OF_BOUNDS_BINDING:
 			return "Out of bounds binding";
-        case FILE_NOT_FOUND:
-            return "File not found";
+		case FILE_NOT_FOUND:
+			return "File not found";
 		case TOO_MANY_INVOCATIONS:
 			return "Too many invocations";
 		case NOT_ENOUGH_MEMORY:
@@ -51,9 +49,7 @@ void __checkCulkanResult(CulkanResult result, const char* file, int line) {
 	}
 }
 
-void __checkCulkanError(Culkan* culkan, const char* file, int line) {
-	__checkCulkanResult(culkan->result, file, line);
-}
+void checkCulkanError(Culkan* culkan, const char* file, int line) { __checkCulkanResult(culkan->result, file, line); }
 
 VkWriteDescriptorSet* createDescriptorSetWrite(VkDescriptorSet descriptorSet, VkDescriptorBufferInfo* bufferInfo, uint32_t binding) {
 	VkWriteDescriptorSet* descriptorWrite = culkanMalloc(VkWriteDescriptorSet, 1);
@@ -149,13 +145,13 @@ void freeGPUVariableData(GPUVariable* variable) {
 	free(variable->bufferInfoVar);
 }
 
-void freeGPUVariable(GPUVariable *variable) {
+void freeGPUVariable(GPUVariable* variable) {
 	freeGPUVariableData(variable);
 	free(variable);
 }
 
 GPUVariable* createGPUVariable(size_t sizeOfVar, VkBufferUsageFlags usage, uint32_t binding, uint32_t family, VkDevice device,
-								VkPhysicalDeviceMemoryProperties* memoryProperties, CulkanResult* result) {
+							   VkPhysicalDeviceMemoryProperties* memoryProperties, CulkanResult* result) {
 	GPUVariable* variable = culkanMalloc(GPUVariable, 1);
 	variable->bufferCreateInfoVar = createBufferCreateInfo(sizeOfVar, usage, family);
 	variable->vkBufferVar = createBuffer(device, variable->bufferCreateInfoVar);
@@ -284,8 +280,11 @@ Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInv
 	culkan->queueFamilies = culkanMalloc(VkQueueFamilyProperties, culkan->queueFamilyCount);
 	vkGetPhysicalDeviceQueueFamilyProperties(culkan->physicalDevice, &culkan->queueFamilyCount, culkan->queueFamilies);
 
-	uint32_t family;
-	for (family = 0; !(culkan->queueFamilies[family].queueFlags & VK_QUEUE_COMPUTE_BIT) && family < culkan->queueFamilyCount; family++) {}
+	uint32_t family = 0;
+	while (family < culkan->queueFamilyCount && !(culkan->queueFamilies[family].queueFlags & VK_QUEUE_COMPUTE_BIT)) {
+		family++;
+	}
+
 	if (family == culkan->queueFamilyCount) {
 		printf("No compute queue family found\n");
 		exit(1);
@@ -531,9 +530,8 @@ void culkanGPUAlloc(Culkan* culkan) {
 	culkan->variables = culkanMalloc(GPUVariable, culkan->layout->bindingCount);
 	for (uint32_t binding_idx = 0; binding_idx < culkan->layout->bindingCount; binding_idx++) {
 		VkBufferUsageFlags usage = toVkBufferUsageFlags(culkan->layout->bindings[binding_idx].type);
-		culkan->variables[binding_idx] =
-			*createGPUVariable(culkan->layout->bindings[binding_idx].size, usage, binding_idx, culkan->family,
-							   culkan->device, &culkan->memoryProperties, &culkan->result);
+		culkan->variables[binding_idx] = *createGPUVariable(culkan->layout->bindings[binding_idx].size, usage, binding_idx, culkan->family,
+															culkan->device, &culkan->memoryProperties, &culkan->result);
 	}
 }
 

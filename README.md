@@ -29,6 +29,7 @@ A basic program will look like this :
 - Step 4: Run the shader with `culkanRun`.
 - Step 5: Read the results with `culkanReadBinding`.
 - Step 6: Free the resources with `culkanDestroy`.
+
 So it's quite simple, and definitely less verbose than Vulkan.
 
 ## Requirements

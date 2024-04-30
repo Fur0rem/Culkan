@@ -30,7 +30,7 @@ typedef struct {
 #define culkanCheckErrorWithMessage(culkan, message)                                                                                                 \
 	if (DEBUG) {                                                                                                                                     \
 		if ((culkan)->result.ckResult != NO_ERROR) {                                                                                                 \
-			fprintf(stderr, "ERROR : %s\n", message);                                                                                                        \
+			fprintf(stderr, "ERROR : %s\n", message);                                                                                                \
 		}                                                                                                                                            \
 		__checkCulkanResult((culkan)->result, __FILE__, __LINE__);                                                                                   \
 	}
@@ -42,11 +42,11 @@ typedef struct {
 							__FILE__, __LINE__);
 // FIXME : WHAT ON PEUT FAIRE CA EN C???????
 // Warning that type* should be enclosed in parentheses but if i do it C++ will cry
-#define culkanMalloc(type, nbElems) 																											   \
-	({\
-		type* ptr = (type*)malloc(sizeof(type) * (nbElems));																					   \
-		culkanCheckAllocation(ptr); 																											   \
-		ptr; 																																	   \
+#define culkanMalloc(type, nbElems)                                                                                                                  \
+	({                                                                                                                                               \
+		type* ptr = (type*)malloc(sizeof(type) * (nbElems));                                                                                         \
+		culkanCheckAllocation(ptr);                                                                                                                  \
+		ptr;                                                                                                                                         \
 	})
 
 const char* culkanErrCodeToString(CulkanErrCodes code);
@@ -60,7 +60,6 @@ VkDescriptorSetLayoutBinding* createDescriptorSetLayoutBinding(uint32_t binding,
 VkBufferCreateInfo* createBufferCreateInfo(uint32_t size, VkBufferUsageFlags usage, uint32_t family);
 VkBuffer* createBuffer(VkDevice device, VkBufferCreateInfo* bufferCreateInfo);
 VkDescriptorPoolSize* createDescriptorPoolSize(VkDescriptorType descriptorType, uint32_t descriptorCount);
-
 
 typedef struct {
 	VkBufferCreateInfo* bufferCreateInfoVar;
@@ -80,7 +79,6 @@ typedef struct {
 	size_t sizeOfVar;
 	void* dataVar;
 } GPUVariable;
-
 
 typedef enum {
 	STORAGE_BUFFER = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
