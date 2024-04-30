@@ -56,8 +56,8 @@ typedef struct {
 /**
  * Converts a CulkanErrCodes to a string
  * Allocates memory for the string, so it should be freed after use
- * @param code the CulkanErrCodes to convert
- * @return the string representation of the CulkanErrCodes
+ * \param code the CulkanErrCodes to convert
+ * \return the string representation of the CulkanErrCodes
  */
 const char* culkanErrCodeToString(CulkanErrCodes code);
 
@@ -65,9 +65,9 @@ const char* culkanErrCodeToString(CulkanErrCodes code);
  * Prints to stderr the error message corresponding to either the Vulkan result or the CulkanErrCodes.
  * Exits the program if there are any errors
  * Should never be called directly, use culkanCheckError macros instead
- * @param result the result to check
- * @param file the file where the error occured
- * @param line the line where the error occured
+ * \param result the result to check
+ * \param file the file where the error occured
+ * \param line the line where the error occured
  */
 void __checkCulkanResult(CulkanResult result, const char* file, int line);
 
@@ -182,10 +182,10 @@ typedef struct {
 /**
  * Opens a file and reads its content into a buffer
  * Allocates memory for the buffer, so it should be freed after use
- * @param filename the name of the file to open
- * @param fileSize a pointer to the size of the file that will be written
- * @param culkan the Culkan instance to use
- * @return the buffer containing the content of the file
+ * \param filename the name of the file to open
+ * \param fileSize a pointer to the size of the file that will be written
+ * \param culkan the Culkan instance to use
+ * \return the buffer containing the content of the file
  */
 uint32_t* culkanOpenShader(const char* filename, size_t* fileSize, Culkan* culkan);
 
@@ -194,14 +194,14 @@ uint32_t* culkanOpenShader(const char* filename, size_t* fileSize, Culkan* culka
  * Creates a variable that lives on the GPU
  * Allocates memory for the variable, so it should be freed after use
  * Should not be called directly, the Culkan instance allocates the memory for the variables itself based on the layout
- * @param sizeOfVar the size of the variable to create
- * @param usage the usage of the variable
- * @param binding the binding of the variable
- * @param family the family of the variable
- * @param device the device to use
- * @param memoryProperties the memory properties of the device
- * @param result the result of the operation
- * @return the created variable
+ * \param sizeOfVar the size of the variable to create
+ * \param usage the usage of the variable
+ * \param binding the binding of the variable
+ * \param family the family of the variable
+ * \param device the device to use
+ * \param memoryProperties the memory properties of the device
+ * \param result the result of the operation
+ * \return the created variable
  */
 GPUVariable* createGPUVariable(size_t sizeOfVar, VkBufferUsageFlags usage, uint32_t binding, uint32_t family, VkDevice device,
 							   VkPhysicalDeviceMemoryProperties* memoryProperties, CulkanResult* result);
@@ -209,94 +209,94 @@ GPUVariable* createGPUVariable(size_t sizeOfVar, VkBufferUsageFlags usage, uint3
  * Frees the data of a GPUVariable
  * Should not be called directly, the Culkan instance frees the memory for the variables itself
  * It only frees the data, not the variable itself, in case you have an array of variables for example
- * @param variable the variable to free
+ * \param variable the variable to free
  */
 void freeGPUVariableData(GPUVariable* variable);
 /**
  * Frees a GPUVariable
  * Should not be called directly, the Culkan instance frees the memory for the variables itself
- * @param variable the variable to free
+ * \param variable the variable to free
  */
 void freeGPUVariable(GPUVariable* variable);
 
 /**
  * Gets a GPUVariable from a Culkan instance
- * @param culkan the Culkan instance to get the variable from
- * @param binding the binding of the variable to get
- * @return the variable
+ * \param culkan the Culkan instance to get the variable from
+ * \param binding the binding of the variable to get
+ * \return the variable
  */
 GPUVariable* culkanGetBinding(Culkan* culkan, uint32_t binding);
 
 /**
  * Writes data to a GPUVariable
  * Can be preferred over culkanWriteBinding, if you want explicit variable names
- * @param variable the variable to write to
- * @param src the data to write
- * @param result the result of the operation
+ * \param variable the variable to write to
+ * \param src the data to write
+ * \param result the result of the operation
  */
 void culkanWriteGPUVariable(GPUVariable* variable, const void* src, CulkanResult* result);
 
 /**
  * Writes data to a binding of a Culkan instance
  * Can be preferred over culkanWriteGPUVariable, if you want to write to a binding directly
- * @param culkan the Culkan instance to write to
- * @param binding the binding to write to
- * @param src the data to write
+ * \param culkan the Culkan instance to write to
+ * \param binding the binding to write to
+ * \param src the data to write
  */
 void culkanWriteBinding(Culkan* culkan, uint32_t binding, const void* src);
 
 /**
  * Reads data from a GPUVariable
  * Can be preferred over culkanReadBinding, if you want explicit variable names
- * @param variable the variable to read from
- * @param dst the destination to write the data to
- * @param result the result of the operation
+ * \param variable the variable to read from
+ * \param dst the destination to write the data to
+ * \param result the result of the operation
  */
 void culkanReadGPUVariable(GPUVariable* variable, void* dst, CulkanResult* result);
 
 /**
  * Reads data from a binding of a Culkan instance
  * Can be preferred over culkanReadGPUVariable, if you want to read from a binding directly
- * @param culkan the Culkan instance to read from
- * @param binding the binding to read from
- * @param dst the destination to write the data to
+ * \param culkan the Culkan instance to read from
+ * \param binding the binding to read from
+ * \param dst the destination to write the data to
  */
 void culkanReadBinding(Culkan* culkan, uint32_t binding, void* dst);
 
 /**
  * Initializes a Culkan instance
  * Allocates memory for the instance, so it should be freed after use by calling culkanDestroy
- * @param layout the layout of the shader to use
- * @param shaderPath the path to the shader to use
- * @param workGroups the number of invocations to use
- * @return the created Culkan instance
+ * \param layout the layout of the shader to use
+ * \param shaderPath the path to the shader to use
+ * \param workGroups the number of invocations to use
+ * \return the created Culkan instance
  */
 Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInvocations workGroups);
 
 /**
  * Sets up the Culkan instance
  * Should be called after writing to the bindings and before running the shader
- * @param culkan the Culkan instance to set up
+ * \param culkan the Culkan instance to set up
  */
 void culkanSetup(Culkan* culkan);
 
 /**
  * Runs the shader of a Culkan instance
  * Should be called after setting up the instance
- * @param culkan the Culkan instance to run
+ * \param culkan the Culkan instance to run
  */
 void culkanRun(Culkan* culkan);
 
 /**
  * Allocates memory for the GPUVariables of a Culkan instance
  * Should not be called directly, culkanSetup does it for you
- * @param culkan the Culkan instance to allocate memory for
+ * \param culkan the Culkan instance to allocate memory for
  */
 void culkanGPUAlloc(Culkan* culkan);
 
 /**
  * Frees the memory used by the Culkan instance
- * @param culkan the Culkan instance to free
+ * \param culkan the Culkan instance to free
  */
 void culkanDestroy(Culkan* culkan);
 

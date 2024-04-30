@@ -15,6 +15,6 @@ example_matrix_sum:
 	cd $(SAMPLES_DIR) && $(GLSLC) matrix_sum.comp -o matrix_sum.spv 
 	cd $(SAMPLES_DIR) && $(CC) $(CFLAGS) matrix_sum.c ../src/culkan.c -o matrix_sum -lvulkan
 
-# Remove every file which is not a source file (doesnt end in .c or .h or .comp in samples)
+# Remove every file which is not a source file in samples directory
 clean_samples:
-	cd $(SAMPLES_DIR) && rm -f $(shell ls | grep -v -E '\.c|\.h|\.comp')
+	cd $(SAMPLES_DIR) && rm $(shell cd $(SAMPLES_DIR) && ls | grep -v -E "\.c")
