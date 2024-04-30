@@ -1,0 +1,320 @@
+\doxysection{src/culkan.c File Reference}
+\hypertarget{culkan_8c}{}\label{culkan_8c}\index{src/culkan.c@{src/culkan.c}}
+
+
+Internal implementation of the \doxylink{structCulkan}{Culkan} library.  
+
+
+{\ttfamily \#include "{}culkan.\+h"{}}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vk\+\_\+enum\+\_\+string\+\_\+helper.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vulkan\+\_\+core.\+h$>$}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a8ffe93d57ee0d0d52ee553daad35e3e0}{culkan\+Err\+Code\+To\+String}} (\mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98}{Culkan\+Err\+Codes}} code)
+\item 
+void \mbox{\hyperlink{culkan_8c_aa3f60534f18a90e1b5d210bf7deb5795}{check\+Culkan\+Error}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, const char \texorpdfstring{$\ast$}{*}file, int line)
+\item 
+Vk\+Write\+Descriptor\+Set \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_af499f0cf64e743b18ad3d3574cf752b6}{create\+Descriptor\+Set\+Write}} (Vk\+Descriptor\+Set descriptor\+Set, Vk\+Descriptor\+Buffer\+Info \texorpdfstring{$\ast$}{*}buffer\+Info, uint32\+\_\+t binding)
+\item 
+Vk\+Descriptor\+Buffer\+Info \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a3de127991a14cf45ab1e598395460a6f}{create\+Descriptor\+Buffer\+Info}} (Vk\+Buffer buffer, uint32\+\_\+t size)
+\item 
+Vk\+Descriptor\+Set\+Layout\+Binding \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a5b9ec1b43eb875a0d7a1aef51fc36f01}{create\+Descriptor\+Set\+Layout\+Binding}} (uint32\+\_\+t binding, Vk\+Descriptor\+Type descriptor\+Type, Vk\+Shader\+Stage\+Flags stage\+Flags)
+\item 
+Vk\+Buffer\+Create\+Info \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_ab2bf034d9de56bfc8e0008962769a2a4}{create\+Buffer\+Create\+Info}} (uint32\+\_\+t size, Vk\+Buffer\+Usage\+Flags usage, uint32\+\_\+t family)
+\item 
+Vk\+Buffer \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_ab81d2c5ced0b8dabd8bba97ef002349c}{create\+Buffer}} (Vk\+Device device, Vk\+Buffer\+Create\+Info \texorpdfstring{$\ast$}{*}buffer\+Create\+Info)
+\item 
+Vk\+Descriptor\+Pool\+Size \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a2b2a52abade9b743ecac363464ff2ef8}{create\+Descriptor\+Pool\+Size}} (Vk\+Descriptor\+Type descriptor\+Type, uint32\+\_\+t descriptor\+Count)
+\item 
+uint32\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a42a4b3b8779434d64ccb106b018b07cd}{culkan\+Open\+Shader}} (const char \texorpdfstring{$\ast$}{*}filename, size\+\_\+t \texorpdfstring{$\ast$}{*}file\+Size, \mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\item 
+void \mbox{\hyperlink{culkan_8c_acce84121ae16ee7ff5b3749af2d4f092}{free\+GPUVariable\+Data}} (\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}variable)
+\item 
+void \mbox{\hyperlink{culkan_8c_af3703d1dd7289d0f88b97e934fca79b4}{free\+GPUVariable}} (\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}variable)
+\item 
+\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a4cca4bb0054e929103b73a108beba644}{create\+GPUVariable}} (size\+\_\+t size\+Of\+Var, Vk\+Buffer\+Usage\+Flags usage, uint32\+\_\+t binding, uint32\+\_\+t family, Vk\+Device device, Vk\+Physical\+Device\+Memory\+Properties \texorpdfstring{$\ast$}{*}memory\+Properties, \mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}result)
+\item 
+\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a9096af3d1c9d3884151786233bb14e2c}{culkan\+Get\+Binding}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, uint32\+\_\+t binding)
+\begin{DoxyCompactList}\small\item\em Gets a \doxylink{structGPUVariable}{GPUVariable} from a \doxylink{structCulkan}{Culkan} instance. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_a145b2b9e6d424761175fad4485ef0948}{culkan\+Write\+GPUVariable}} (\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}variable, const void \texorpdfstring{$\ast$}{*}src, \mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}result)
+\begin{DoxyCompactList}\small\item\em Writes data to a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Write\+Binding, if you want explicit variable names. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_a0bc88286426ff7cdd0015969e90858dc}{culkan\+Write\+Binding}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, uint32\+\_\+t binding, const void \texorpdfstring{$\ast$}{*}src)
+\begin{DoxyCompactList}\small\item\em Writes data to a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Write\+GPUVariable, if you want to write to a binding directly. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_abeb06417cbcaa7f633d8bcfe37da96e8}{culkan\+Read\+GPUVariable}} (\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}variable, void \texorpdfstring{$\ast$}{*}dst, \mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}result)
+\begin{DoxyCompactList}\small\item\em Reads data from a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Read\+Binding, if you want explicit variable names. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_a50954529830b9f0ef6b9d8de1efb45ac}{culkan\+Read\+Binding}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, uint32\+\_\+t binding, void \texorpdfstring{$\ast$}{*}dst)
+\begin{DoxyCompactList}\small\item\em Reads data from a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Read\+GPUVariable, if you want to read from a binding directly. \end{DoxyCompactList}\item 
+Vk\+Buffer\+Usage\+Flags \mbox{\hyperlink{culkan_8c_a6210042c987351d88d4d5fe42c8d864e}{to\+Vk\+Buffer\+Usage\+Flags}} (\mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}{Culkan\+Binding\+Type}} type)
+\item 
+void \mbox{\hyperlink{culkan_8c_ac9af24f583b922cb9ceadfb56b794f7d}{culkan\+GPUAlloc}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\item 
+\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8c_a460a50dcc807b1f809986feb56ebf180}{culkan\+Init}} (const \mbox{\hyperlink{structCulkanLayout}{Culkan\+Layout}} \texorpdfstring{$\ast$}{*}layout, const char \texorpdfstring{$\ast$}{*}shader\+Path, \mbox{\hyperlink{structCulkanInvocations}{Culkan\+Invocations}} invocations)
+\begin{DoxyCompactList}\small\item\em Initializes a \doxylink{structCulkan}{Culkan} instance. It allocates memory for the instance, so it should be freed after use by calling \doxylink{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy()} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_a0d3a7399fd39df0832e7d199b5d941e2}{culkan\+Setup}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\begin{DoxyCompactList}\small\item\em Sets up the \doxylink{structCulkan}{Culkan} instance. Should be called after writing to the bindings and before running the shader. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_aeeac644d7805a13ed06867c75f21a845}{culkan\+Run}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\begin{DoxyCompactList}\small\item\em Runs the shader of a \doxylink{structCulkan}{Culkan} instance. Should be called after setting up the instance. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8c_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\begin{DoxyCompactList}\small\item\em Frees the memory of a \doxylink{structCulkan}{Culkan} instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Internal implementation of the \doxylink{structCulkan}{Culkan} library. 
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{culkan_8c_aa3f60534f18a90e1b5d210bf7deb5795}\label{culkan_8c_aa3f60534f18a90e1b5d210bf7deb5795} 
+\index{culkan.c@{culkan.c}!checkCulkanError@{checkCulkanError}}
+\index{checkCulkanError@{checkCulkanError}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{checkCulkanError()}{checkCulkanError()}}
+{\footnotesize\ttfamily void check\+Culkan\+Error (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{file,  }\item[{int}]{line }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_ab81d2c5ced0b8dabd8bba97ef002349c}\label{culkan_8c_ab81d2c5ced0b8dabd8bba97ef002349c} 
+\index{culkan.c@{culkan.c}!createBuffer@{createBuffer}}
+\index{createBuffer@{createBuffer}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createBuffer()}{createBuffer()}}
+{\footnotesize\ttfamily Vk\+Buffer \texorpdfstring{$\ast$}{*} create\+Buffer (\begin{DoxyParamCaption}\item[{Vk\+Device}]{device,  }\item[{Vk\+Buffer\+Create\+Info \texorpdfstring{$\ast$}{*}}]{buffer\+Create\+Info }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_ab2bf034d9de56bfc8e0008962769a2a4}\label{culkan_8c_ab2bf034d9de56bfc8e0008962769a2a4} 
+\index{culkan.c@{culkan.c}!createBufferCreateInfo@{createBufferCreateInfo}}
+\index{createBufferCreateInfo@{createBufferCreateInfo}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createBufferCreateInfo()}{createBufferCreateInfo()}}
+{\footnotesize\ttfamily Vk\+Buffer\+Create\+Info \texorpdfstring{$\ast$}{*} create\+Buffer\+Create\+Info (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{size,  }\item[{Vk\+Buffer\+Usage\+Flags}]{usage,  }\item[{uint32\+\_\+t}]{family }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a3de127991a14cf45ab1e598395460a6f}\label{culkan_8c_a3de127991a14cf45ab1e598395460a6f} 
+\index{culkan.c@{culkan.c}!createDescriptorBufferInfo@{createDescriptorBufferInfo}}
+\index{createDescriptorBufferInfo@{createDescriptorBufferInfo}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createDescriptorBufferInfo()}{createDescriptorBufferInfo()}}
+{\footnotesize\ttfamily Vk\+Descriptor\+Buffer\+Info \texorpdfstring{$\ast$}{*} create\+Descriptor\+Buffer\+Info (\begin{DoxyParamCaption}\item[{Vk\+Buffer}]{buffer,  }\item[{uint32\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a2b2a52abade9b743ecac363464ff2ef8}\label{culkan_8c_a2b2a52abade9b743ecac363464ff2ef8} 
+\index{culkan.c@{culkan.c}!createDescriptorPoolSize@{createDescriptorPoolSize}}
+\index{createDescriptorPoolSize@{createDescriptorPoolSize}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createDescriptorPoolSize()}{createDescriptorPoolSize()}}
+{\footnotesize\ttfamily Vk\+Descriptor\+Pool\+Size \texorpdfstring{$\ast$}{*} create\+Descriptor\+Pool\+Size (\begin{DoxyParamCaption}\item[{Vk\+Descriptor\+Type}]{descriptor\+Type,  }\item[{uint32\+\_\+t}]{descriptor\+Count }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a5b9ec1b43eb875a0d7a1aef51fc36f01}\label{culkan_8c_a5b9ec1b43eb875a0d7a1aef51fc36f01} 
+\index{culkan.c@{culkan.c}!createDescriptorSetLayoutBinding@{createDescriptorSetLayoutBinding}}
+\index{createDescriptorSetLayoutBinding@{createDescriptorSetLayoutBinding}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createDescriptorSetLayoutBinding()}{createDescriptorSetLayoutBinding()}}
+{\footnotesize\ttfamily Vk\+Descriptor\+Set\+Layout\+Binding \texorpdfstring{$\ast$}{*} create\+Descriptor\+Set\+Layout\+Binding (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{binding,  }\item[{Vk\+Descriptor\+Type}]{descriptor\+Type,  }\item[{Vk\+Shader\+Stage\+Flags}]{stage\+Flags }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_af499f0cf64e743b18ad3d3574cf752b6}\label{culkan_8c_af499f0cf64e743b18ad3d3574cf752b6} 
+\index{culkan.c@{culkan.c}!createDescriptorSetWrite@{createDescriptorSetWrite}}
+\index{createDescriptorSetWrite@{createDescriptorSetWrite}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createDescriptorSetWrite()}{createDescriptorSetWrite()}}
+{\footnotesize\ttfamily Vk\+Write\+Descriptor\+Set \texorpdfstring{$\ast$}{*} create\+Descriptor\+Set\+Write (\begin{DoxyParamCaption}\item[{Vk\+Descriptor\+Set}]{descriptor\+Set,  }\item[{Vk\+Descriptor\+Buffer\+Info \texorpdfstring{$\ast$}{*}}]{buffer\+Info,  }\item[{uint32\+\_\+t}]{binding }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a4cca4bb0054e929103b73a108beba644}\label{culkan_8c_a4cca4bb0054e929103b73a108beba644} 
+\index{culkan.c@{culkan.c}!createGPUVariable@{createGPUVariable}}
+\index{createGPUVariable@{createGPUVariable}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{createGPUVariable()}{createGPUVariable()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*} create\+GPUVariable (\begin{DoxyParamCaption}\item[{size\+\_\+t}]{size\+Of\+Var,  }\item[{Vk\+Buffer\+Usage\+Flags}]{usage,  }\item[{uint32\+\_\+t}]{binding,  }\item[{uint32\+\_\+t}]{family,  }\item[{Vk\+Device}]{device,  }\item[{Vk\+Physical\+Device\+Memory\+Properties \texorpdfstring{$\ast$}{*}}]{memory\+Properties,  }\item[{\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}}]{result }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a6ab354f4979edbe0dc23e64b26129ba5}\label{culkan_8c_a6ab354f4979edbe0dc23e64b26129ba5} 
+\index{culkan.c@{culkan.c}!culkanDestroy@{culkanDestroy}}
+\index{culkanDestroy@{culkanDestroy}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanDestroy()}{culkanDestroy()}}
+{\footnotesize\ttfamily void culkan\+Destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+
+
+Frees the memory of a \doxylink{structCulkan}{Culkan} instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to free the memory of \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_a8ffe93d57ee0d0d52ee553daad35e3e0}\label{culkan_8c_a8ffe93d57ee0d0d52ee553daad35e3e0} 
+\index{culkan.c@{culkan.c}!culkanErrCodeToString@{culkanErrCodeToString}}
+\index{culkanErrCodeToString@{culkanErrCodeToString}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanErrCodeToString()}{culkanErrCodeToString()}}
+{\footnotesize\ttfamily const char \texorpdfstring{$\ast$}{*} culkan\+Err\+Code\+To\+String (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98}{Culkan\+Err\+Codes}}}]{code }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a9096af3d1c9d3884151786233bb14e2c}\label{culkan_8c_a9096af3d1c9d3884151786233bb14e2c} 
+\index{culkan.c@{culkan.c}!culkanGetBinding@{culkanGetBinding}}
+\index{culkanGetBinding@{culkanGetBinding}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanGetBinding()}{culkanGetBinding()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*} culkan\+Get\+Binding (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{uint32\+\_\+t}]{binding }\end{DoxyParamCaption})}
+
+
+
+Gets a \doxylink{structGPUVariable}{GPUVariable} from a \doxylink{structCulkan}{Culkan} instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to get the variable from \\
+\hline
+{\em binding} & the binding of the variable to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the variable 
+\end{DoxyReturn}
+\Hypertarget{culkan_8c_ac9af24f583b922cb9ceadfb56b794f7d}\label{culkan_8c_ac9af24f583b922cb9ceadfb56b794f7d} 
+\index{culkan.c@{culkan.c}!culkanGPUAlloc@{culkanGPUAlloc}}
+\index{culkanGPUAlloc@{culkanGPUAlloc}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanGPUAlloc()}{culkanGPUAlloc()}}
+{\footnotesize\ttfamily void culkan\+GPUAlloc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a460a50dcc807b1f809986feb56ebf180}\label{culkan_8c_a460a50dcc807b1f809986feb56ebf180} 
+\index{culkan.c@{culkan.c}!culkanInit@{culkanInit}}
+\index{culkanInit@{culkanInit}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanInit()}{culkanInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*} culkan\+Init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structCulkanLayout}{Culkan\+Layout}} \texorpdfstring{$\ast$}{*}}]{layout,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{shader\+Path,  }\item[{\mbox{\hyperlink{structCulkanInvocations}{Culkan\+Invocations}}}]{work\+Groups }\end{DoxyParamCaption})}
+
+
+
+Initializes a \doxylink{structCulkan}{Culkan} instance. It allocates memory for the instance, so it should be freed after use by calling \doxylink{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy()} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em layout} & the layout of the shader to use \\
+\hline
+{\em shader\+Path} & the path to the shader to use \\
+\hline
+{\em work\+Groups} & the number of invocations to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the created \doxylink{structCulkan}{Culkan} instance 
+\end{DoxyReturn}
+\Hypertarget{culkan_8c_a42a4b3b8779434d64ccb106b018b07cd}\label{culkan_8c_a42a4b3b8779434d64ccb106b018b07cd} 
+\index{culkan.c@{culkan.c}!culkanOpenShader@{culkanOpenShader}}
+\index{culkanOpenShader@{culkanOpenShader}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanOpenShader()}{culkanOpenShader()}}
+{\footnotesize\ttfamily uint32\+\_\+t \texorpdfstring{$\ast$}{*} culkan\+Open\+Shader (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{filename,  }\item[{size\+\_\+t \texorpdfstring{$\ast$}{*}}]{file\+Size,  }\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a50954529830b9f0ef6b9d8de1efb45ac}\label{culkan_8c_a50954529830b9f0ef6b9d8de1efb45ac} 
+\index{culkan.c@{culkan.c}!culkanReadBinding@{culkanReadBinding}}
+\index{culkanReadBinding@{culkanReadBinding}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanReadBinding()}{culkanReadBinding()}}
+{\footnotesize\ttfamily void culkan\+Read\+Binding (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{uint32\+\_\+t}]{binding,  }\item[{void \texorpdfstring{$\ast$}{*}}]{dst }\end{DoxyParamCaption})}
+
+
+
+Reads data from a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Read\+GPUVariable, if you want to read from a binding directly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to read from \\
+\hline
+{\em binding} & the binding to read from \\
+\hline
+{\em dst} & the destination to write the data to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_abeb06417cbcaa7f633d8bcfe37da96e8}\label{culkan_8c_abeb06417cbcaa7f633d8bcfe37da96e8} 
+\index{culkan.c@{culkan.c}!culkanReadGPUVariable@{culkanReadGPUVariable}}
+\index{culkanReadGPUVariable@{culkanReadGPUVariable}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanReadGPUVariable()}{culkanReadGPUVariable()}}
+{\footnotesize\ttfamily void culkan\+Read\+GPUVariable (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}}]{variable,  }\item[{void \texorpdfstring{$\ast$}{*}}]{dst,  }\item[{\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}}]{result }\end{DoxyParamCaption})}
+
+
+
+Reads data from a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Read\+Binding, if you want explicit variable names. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em variable} & the variable to read from \\
+\hline
+{\em dst} & the destination to write the data to \\
+\hline
+{\em result} & the result of the operation \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_aeeac644d7805a13ed06867c75f21a845}\label{culkan_8c_aeeac644d7805a13ed06867c75f21a845} 
+\index{culkan.c@{culkan.c}!culkanRun@{culkanRun}}
+\index{culkanRun@{culkanRun}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanRun()}{culkanRun()}}
+{\footnotesize\ttfamily void culkan\+Run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+
+
+Runs the shader of a \doxylink{structCulkan}{Culkan} instance. Should be called after setting up the instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to run \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_a0d3a7399fd39df0832e7d199b5d941e2}\label{culkan_8c_a0d3a7399fd39df0832e7d199b5d941e2} 
+\index{culkan.c@{culkan.c}!culkanSetup@{culkanSetup}}
+\index{culkanSetup@{culkanSetup}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanSetup()}{culkanSetup()}}
+{\footnotesize\ttfamily void culkan\+Setup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+
+
+Sets up the \doxylink{structCulkan}{Culkan} instance. Should be called after writing to the bindings and before running the shader. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to set up \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_a0bc88286426ff7cdd0015969e90858dc}\label{culkan_8c_a0bc88286426ff7cdd0015969e90858dc} 
+\index{culkan.c@{culkan.c}!culkanWriteBinding@{culkanWriteBinding}}
+\index{culkanWriteBinding@{culkanWriteBinding}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanWriteBinding()}{culkanWriteBinding()}}
+{\footnotesize\ttfamily void culkan\+Write\+Binding (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{uint32\+\_\+t}]{binding,  }\item[{const void \texorpdfstring{$\ast$}{*}}]{src }\end{DoxyParamCaption})}
+
+
+
+Writes data to a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Write\+GPUVariable, if you want to write to a binding directly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to write to \\
+\hline
+{\em binding} & the binding to write to \\
+\hline
+{\em src} & the data to write \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_a145b2b9e6d424761175fad4485ef0948}\label{culkan_8c_a145b2b9e6d424761175fad4485ef0948} 
+\index{culkan.c@{culkan.c}!culkanWriteGPUVariable@{culkanWriteGPUVariable}}
+\index{culkanWriteGPUVariable@{culkanWriteGPUVariable}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{culkanWriteGPUVariable()}{culkanWriteGPUVariable()}}
+{\footnotesize\ttfamily void culkan\+Write\+GPUVariable (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}}]{variable,  }\item[{const void \texorpdfstring{$\ast$}{*}}]{src,  }\item[{\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}}]{result }\end{DoxyParamCaption})}
+
+
+
+Writes data to a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Write\+Binding, if you want explicit variable names. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em variable} & the variable to write to \\
+\hline
+{\em src} & the data to write \\
+\hline
+{\em result} & the result of the operation \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8c_af3703d1dd7289d0f88b97e934fca79b4}\label{culkan_8c_af3703d1dd7289d0f88b97e934fca79b4} 
+\index{culkan.c@{culkan.c}!freeGPUVariable@{freeGPUVariable}}
+\index{freeGPUVariable@{freeGPUVariable}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{freeGPUVariable()}{freeGPUVariable()}}
+{\footnotesize\ttfamily void free\+GPUVariable (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}}]{variable }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_acce84121ae16ee7ff5b3749af2d4f092}\label{culkan_8c_acce84121ae16ee7ff5b3749af2d4f092} 
+\index{culkan.c@{culkan.c}!freeGPUVariableData@{freeGPUVariableData}}
+\index{freeGPUVariableData@{freeGPUVariableData}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{freeGPUVariableData()}{freeGPUVariableData()}}
+{\footnotesize\ttfamily void free\+GPUVariable\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}}]{variable }\end{DoxyParamCaption})}
+
+\Hypertarget{culkan_8c_a6210042c987351d88d4d5fe42c8d864e}\label{culkan_8c_a6210042c987351d88d4d5fe42c8d864e} 
+\index{culkan.c@{culkan.c}!toVkBufferUsageFlags@{toVkBufferUsageFlags}}
+\index{toVkBufferUsageFlags@{toVkBufferUsageFlags}!culkan.c@{culkan.c}}
+\doxysubsubsection{\texorpdfstring{toVkBufferUsageFlags()}{toVkBufferUsageFlags()}}
+{\footnotesize\ttfamily Vk\+Buffer\+Usage\+Flags to\+Vk\+Buffer\+Usage\+Flags (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}{Culkan\+Binding\+Type}}}]{type }\end{DoxyParamCaption})}
+

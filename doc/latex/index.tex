@@ -1,0 +1,40 @@
+\chapter{Culkan}
+\hypertarget{index}{}\label{index}\index{Culkan@{Culkan}}
+\label{index_md_README}%
+\Hypertarget{index_md_README}%
+A minimalist wrapper around the Vulkan API to write easy, portable, and (somewhat) safe compute shaders in C!\hypertarget{index_autotoc_md1}{}\doxysection{\texorpdfstring{Why was this made?}{Why was this made?}}\label{index_autotoc_md1}
+I wanted a compute shader to parallelise one of my projects, it was meant to run on a super-\/computer, so I needed something portable, fast, and able to run without a window, so Vulkan was the best choice. Sadly I\textquotesingle{}m not very experienced with Vulkan, and I would\textquotesingle{}ve had a hard time transferring my whole algorithm to it. So I made this side project that automatically manages variables, memory, and the pipeline, so I could focus on the algorithm itself.\hypertarget{index_autotoc_md2}{}\doxysection{\texorpdfstring{Advantages}{Advantages}}\label{index_autotoc_md2}
+
+\begin{DoxyItemize}
+\item Very easy to use, and doesn\textquotesingle{}t require much code to get started. I would say it\textquotesingle{}s about as hard as CUDA, so quite easy if you have a basic understanding of parallel programming.
+\item Fast \& Portable, because so is Vulkan.
+\item Error handling and checking, if you want, there are automatic memory checks, that you can enable or disable, which prevents basic mistakes like writing to a variable that doesn\textquotesingle{}t exist, or not finding the shader file, or Vulkan not being supported. All of that without needing to mess with Validation Layers.
+\item Can also be used with C++
+\item No need to create a window, or use a library like GLFW, it\textquotesingle{}s meant to be used without a window, and it\textquotesingle{}s very lightweight.
+\item Can work with any shader language you like, I chose GLSL in the examples simply because it\textquotesingle{}s the closest to C in terms of syntax 
+\end{DoxyItemize}\hypertarget{index_autotoc_md3}{}\doxysection{\texorpdfstring{Disadvantages}{Disadvantages}}\label{index_autotoc_md3}
+
+\begin{DoxyItemize}
+\item Not very flexible, as it\textquotesingle{}s meant to be simple, it doesn\textquotesingle{}t support many features of Vulkan, and it\textquotesingle{}s not meant to be used for complex graphics, only for compute shaders.
+\end{DoxyItemize}\hypertarget{index_autotoc_md4}{}\doxysection{\texorpdfstring{Should I use this?}{Should I use this?}}\label{index_autotoc_md4}
+If all you need is to send data to the GPU, make it do some calculations, and get the results back, then it\textquotesingle{}s perfect. For example \+: doing operations on very large arrays, matrices and so on... However, if you need to do more complex operations, you should use Vulkan directly, or a wrapper with more features.\hypertarget{index_autotoc_md5}{}\doxysection{\texorpdfstring{How can I use it?}{How can I use it?}}\label{index_autotoc_md5}
+A basic program will look like this \+:
+\begin{DoxyItemize}
+\item Step 1\+: Init the \doxylink{structCulkan}{Culkan} instance with {\ttfamily \doxylink{culkan_8c_a460a50dcc807b1f809986feb56ebf180}{culkan\+Init()}}, which takes a shader binding layout, and a shader file.
+\item Step 2\+: Write to the variables with {\ttfamily \doxylink{culkan_8c_a0bc88286426ff7cdd0015969e90858dc}{culkan\+Write\+Binding()}} or {\ttfamily \doxylink{culkan_8c_a145b2b9e6d424761175fad4485ef0948}{culkan\+Write\+GPUVariable()}}.
+\item Step 3\+: Finish the setup with {\ttfamily \doxylink{culkan_8c_a0d3a7399fd39df0832e7d199b5d941e2}{culkan\+Setup()}}.
+\item Step 4\+: Run the shader with {\ttfamily \doxylink{culkan_8c_aeeac644d7805a13ed06867c75f21a845}{culkan\+Run()}}.
+\item Step 5\+: Read the results with {\ttfamily \doxylink{culkan_8c_a50954529830b9f0ef6b9d8de1efb45ac}{culkan\+Read\+Binding()}} or {\ttfamily \doxylink{culkan_8c_abeb06417cbcaa7f633d8bcfe37da96e8}{culkan\+Read\+GPUVariable()}}.
+\item Step 6\+: Free the resources with {\ttfamily \doxylink{culkan_8c_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy()}}.
+\end{DoxyItemize}
+
+So it\textquotesingle{}s quite simple, and definitely less verbose than Vulkan.\hypertarget{index_autotoc_md6}{}\doxysection{\texorpdfstring{Requirements}{Requirements}}\label{index_autotoc_md6}
+
+\begin{DoxyItemize}
+\item A C or C++ compiler
+\item Vulkan libraries
+\item GPU drivers that support Vulkan
+\end{DoxyItemize}
+
+You should be able to run on any architecture/\+OS/distro with these requirements, I tested it on Linux with an AMD GPU (Manjaro, AMD Lucienne).\hypertarget{index_autotoc_md7}{}\doxysection{\texorpdfstring{Miscelaneous}{Miscelaneous}}\label{index_autotoc_md7}
+I am a bit stupid, so if the code is a bit stupid, that\textquotesingle{}s why. Clang tidy is mad at me for a few reasons, I\textquotesingle{}ll have to fix that. FIXME The casing and naming style may change in the future, because I\textquotesingle{}m not sure on if I want to follow Vulkan\textquotesingle{}s naming style or dissociate from it, but it shouldn\textquotesingle{}t be too bad to change it in your code if you ever use this. I promise I will do better documentation and examples in the future, and clean up some stuff. But I don\textquotesingle{}t want to be too off-\/schedule with my main project. I learned a bit about Vulkan, so that\textquotesingle{}s cool. If this is useful to you, then I\textquotesingle{}m happy \+:D 

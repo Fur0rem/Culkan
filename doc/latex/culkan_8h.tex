@@ -1,0 +1,435 @@
+\doxysection{src/culkan.h File Reference}
+\hypertarget{culkan_8h}{}\label{culkan_8h}\index{src/culkan.h@{src/culkan.h}}
+
+
+The main header file for the \doxylink{structCulkan}{Culkan} library, and the API you should use.  
+
+
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vulkan.\+h$>$}\newline
+{\ttfamily \#include $<$vulkan/vulkan\+\_\+core.\+h$>$}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCulkanResult}{Culkan\+Result}}
+\begin{DoxyCompactList}\small\item\em Struct that holds the result of a function that can return an error. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structGPUVariable}{GPUVariable}}
+\item 
+struct \mbox{\hyperlink{structCulkanBinding}{Culkan\+Binding}}
+\item 
+struct \mbox{\hyperlink{structCulkanLayout}{Culkan\+Layout}}
+\item 
+struct \mbox{\hyperlink{structCulkanInvocations}{Culkan\+Invocations}}
+\item 
+struct \mbox{\hyperlink{structCulkan}{Culkan}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}}~1
+\begin{DoxyCompactList}\small\item\em The debug flag. If defined, the library will print errors and other debug information. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{culkan_8h_a9636541413ff68c1d83e42d33205e117}{CULKAN\+\_\+\+SUCCESS}}~ (\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}}) \{ VK\+\_\+\+SUCCESS, SUCCESS \}
+\item 
+\#define \mbox{\hyperlink{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab}{culkan\+Check\+Error}}(culkan)~ if (\mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}}) \+\_\+\+\_\+check\+Culkan\+Result((culkan)-\/$>$result, \+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+);
+\begin{DoxyCompactList}\small\item\em Check for any errors after a \doxylink{structCulkan}{Culkan} function call. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{culkan_8h_ade82bc306aa3ceac4b397ce6ebf692e0}{culkan\+Check\+Error\+With\+Message}}(culkan,  message)
+\begin{DoxyCompactList}\small\item\em Like \doxylink{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab}{culkan\+Check\+Error()}, but with a custom message. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{culkan_8h_ac55b2efa6c62078e4b7c24e315e8163f}{vk\+Check\+Error}}(vk\+Result)~ if (\mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}}) \+\_\+\+\_\+check\+Culkan\+Result((\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}})\{vk\+Result, \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\+\_\+\+ERROR}}\}, \+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+);
+\begin{DoxyCompactList}\small\item\em Like \doxylink{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab}{culkan\+Check\+Error()}, but for vulkan functions. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{culkan_8h_a2a389a8eb10945187e9c61339af70261}{culkan\+Check\+Allocation}}(variable)
+\begin{DoxyCompactList}\small\item\em Checks for any allocation errors after a malloc call. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{culkan_8h_afdf0f7830bd4d1ca35c57e1a7d0f8a4d}{culkan\+Malloc}}(type,  nb\+Elems)
+\begin{DoxyCompactList}\small\item\em Custom malloc with checks for allocation errors. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98}{Culkan\+Err\+Codes}} \{ \newline
+\mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\+\_\+\+ERROR}}
+, \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98ad34629b5fe942a3917bbb80319178f08}{OUT\+\_\+\+OF\+\_\+\+BOUNDS\+\_\+\+BINDING}}
+, \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abc27a6b909296003973e169faf52f52d}{FILE\+\_\+\+NOT\+\_\+\+FOUND}}
+, \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98a175dcc3f0f9805389aa1fd2d7720c6b9}{TOO\+\_\+\+MANY\+\_\+\+INVOCATIONS}}
+, \newline
+\mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98a2fa3114dc11f3a0dbfc8f2a3d141e2da}{NOT\+\_\+\+ENOUGH\+\_\+\+MEMORY}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum that holds the different error codes that can be returned by the library. \end{DoxyCompactList}\item 
+enum \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}{Culkan\+Binding\+Type}} \{ \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa5e911fc3ee91d19a4f9ff25613f656a8}{STORAGE\+\_\+\+BUFFER}} = VK\+\_\+\+DESCRIPTOR\+\_\+\+TYPE\+\_\+\+STORAGE\+\_\+\+BUFFER
+, \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa2f21aaec854e52d8488ce1f7bb06eb36}{UNIFORM\+\_\+\+BUFFER}} = VK\+\_\+\+DESCRIPTOR\+\_\+\+TYPE\+\_\+\+UNIFORM\+\_\+\+BUFFER
+, \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeffabe48c5bcb397997033ece3e037ab5eb2}{OUTPUT\+\_\+\+BUFFER}} = VK\+\_\+\+DESCRIPTOR\+\_\+\+TYPE\+\_\+\+STORAGE\+\_\+\+BUFFER
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8h_a9096af3d1c9d3884151786233bb14e2c}{culkan\+Get\+Binding}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, uint32\+\_\+t binding)
+\begin{DoxyCompactList}\small\item\em Gets a \doxylink{structGPUVariable}{GPUVariable} from a \doxylink{structCulkan}{Culkan} instance. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_a145b2b9e6d424761175fad4485ef0948}{culkan\+Write\+GPUVariable}} (\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}variable, const void \texorpdfstring{$\ast$}{*}src, \mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}result)
+\begin{DoxyCompactList}\small\item\em Writes data to a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Write\+Binding, if you want explicit variable names. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_a0bc88286426ff7cdd0015969e90858dc}{culkan\+Write\+Binding}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, uint32\+\_\+t binding, const void \texorpdfstring{$\ast$}{*}src)
+\begin{DoxyCompactList}\small\item\em Writes data to a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Write\+GPUVariable, if you want to write to a binding directly. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_abeb06417cbcaa7f633d8bcfe37da96e8}{culkan\+Read\+GPUVariable}} (\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}variable, void \texorpdfstring{$\ast$}{*}dst, \mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}result)
+\begin{DoxyCompactList}\small\item\em Reads data from a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Read\+Binding, if you want explicit variable names. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_a50954529830b9f0ef6b9d8de1efb45ac}{culkan\+Read\+Binding}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan, uint32\+\_\+t binding, void \texorpdfstring{$\ast$}{*}dst)
+\begin{DoxyCompactList}\small\item\em Reads data from a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Read\+GPUVariable, if you want to read from a binding directly. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{culkan_8h_aeda029209fdb54528d9fd5e887caa4a0}{culkan\+Init}} (const \mbox{\hyperlink{structCulkanLayout}{Culkan\+Layout}} \texorpdfstring{$\ast$}{*}layout, const char \texorpdfstring{$\ast$}{*}shader\+Path, \mbox{\hyperlink{structCulkanInvocations}{Culkan\+Invocations}} work\+Groups)
+\begin{DoxyCompactList}\small\item\em Initializes a \doxylink{structCulkan}{Culkan} instance. It allocates memory for the instance, so it should be freed after use by calling \doxylink{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy()} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_a0d3a7399fd39df0832e7d199b5d941e2}{culkan\+Setup}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\begin{DoxyCompactList}\small\item\em Sets up the \doxylink{structCulkan}{Culkan} instance. Should be called after writing to the bindings and before running the shader. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_aeeac644d7805a13ed06867c75f21a845}{culkan\+Run}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\begin{DoxyCompactList}\small\item\em Runs the shader of a \doxylink{structCulkan}{Culkan} instance. Should be called after setting up the instance. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy}} (\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}culkan)
+\begin{DoxyCompactList}\small\item\em Frees the memory of a \doxylink{structCulkan}{Culkan} instance. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The main header file for the \doxylink{structCulkan}{Culkan} library, and the API you should use. 
+
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{culkan_8h_a9636541413ff68c1d83e42d33205e117}\label{culkan_8h_a9636541413ff68c1d83e42d33205e117} 
+\index{culkan.h@{culkan.h}!CULKAN\_SUCCESS@{CULKAN\_SUCCESS}}
+\index{CULKAN\_SUCCESS@{CULKAN\_SUCCESS}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{CULKAN\_SUCCESS}{CULKAN\_SUCCESS}}
+{\footnotesize\ttfamily \#define CULKAN\+\_\+\+SUCCESS~ (\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}}) \{ VK\+\_\+\+SUCCESS, SUCCESS \}}
+
+@ Macro for a successful \doxylink{structCulkanResult}{Culkan\+Result} \Hypertarget{culkan_8h_a2a389a8eb10945187e9c61339af70261}\label{culkan_8h_a2a389a8eb10945187e9c61339af70261} 
+\index{culkan.h@{culkan.h}!culkanCheckAllocation@{culkanCheckAllocation}}
+\index{culkanCheckAllocation@{culkanCheckAllocation}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanCheckAllocation}{culkanCheckAllocation}}
+{\footnotesize\ttfamily \#define culkan\+Check\+Allocation(\begin{DoxyParamCaption}\item[{}]{variable }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}})\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \_\_checkCulkanResult((variable)\ ==\ NULL\ ?\ (\mbox{\hyperlink{structCulkanResult}{CulkanResult}})\{VK\_ERROR\_OUT\_OF\_HOST\_MEMORY,\ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\_ERROR}}\}\ :\ (\mbox{\hyperlink{structCulkanResult}{CulkanResult}})\{VK\_SUCCESS,\ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\_ERROR}}\},\ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_FILE\_\_,\ \_\_LINE\_\_);}
+
+\end{DoxyCode}
+
+
+Checks for any allocation errors after a malloc call. 
+
+If the allocation failed, it prints where the error occurred and exits the program 
+\begin{DoxyParams}{Parameters}
+{\em variable} & the variable to check the allocation of \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab}\label{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab} 
+\index{culkan.h@{culkan.h}!culkanCheckError@{culkanCheckError}}
+\index{culkanCheckError@{culkanCheckError}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanCheckError}{culkanCheckError}}
+{\footnotesize\ttfamily \#define culkan\+Check\+Error(\begin{DoxyParamCaption}\item[{}]{culkan }\end{DoxyParamCaption})~ if (\mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}}) \+\_\+\+\_\+check\+Culkan\+Result((culkan)-\/$>$result, \+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+);}
+
+
+
+Check for any errors after a \doxylink{structCulkan}{Culkan} function call. 
+
+It reads the result field of a \doxylink{structCulkan}{Culkan} instance. If there are errors, it prints the error name and code, line and file where the error occurred, and exits the program. 
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to check the result of \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_ade82bc306aa3ceac4b397ce6ebf692e0}\label{culkan_8h_ade82bc306aa3ceac4b397ce6ebf692e0} 
+\index{culkan.h@{culkan.h}!culkanCheckErrorWithMessage@{culkanCheckErrorWithMessage}}
+\index{culkanCheckErrorWithMessage@{culkanCheckErrorWithMessage}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanCheckErrorWithMessage}{culkanCheckErrorWithMessage}}
+{\footnotesize\ttfamily \#define culkan\+Check\+Error\+With\+Message(\begin{DoxyParamCaption}\item[{}]{culkan,  }\item[{}]{message }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{if}\ (\mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}})\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ if\ ((culkan)-\/>result.ckResult\ !=\ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\_ERROR}})\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ \textcolor{stringliteral}{"{}ERROR\ :\ \%s\(\backslash\)n"{}},\ message);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \_\_checkCulkanResult((culkan)-\/>result,\ \_\_FILE\_\_,\ \_\_LINE\_\_);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \}}
+
+\end{DoxyCode}
+
+
+Like \doxylink{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab}{culkan\+Check\+Error()}, but with a custom message. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to check the result of \\
+\hline
+{\em message} & the message to print if there is an error \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_afdf0f7830bd4d1ca35c57e1a7d0f8a4d}\label{culkan_8h_afdf0f7830bd4d1ca35c57e1a7d0f8a4d} 
+\index{culkan.h@{culkan.h}!culkanMalloc@{culkanMalloc}}
+\index{culkanMalloc@{culkanMalloc}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanMalloc}{culkanMalloc}}
+{\footnotesize\ttfamily \#define culkan\+Malloc(\begin{DoxyParamCaption}\item[{}]{type,  }\item[{}]{nb\+Elems }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\ \ \ \ (\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ type*\ ptr\ =\ (type*)malloc(\textcolor{keyword}{sizeof}(type)\ *\ (nbElems));\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ culkanCheckAllocation(ptr);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ ptr;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{\ \ \ \ \})}
+
+\end{DoxyCode}
+
+
+Custom malloc with checks for allocation errors. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the type of the variable to allocate \\
+\hline
+{\em nb\+Elems} & the number of elements to allocate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the allocated variable 
+\end{DoxyReturn}
+\Hypertarget{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}\label{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83} 
+\index{culkan.h@{culkan.h}!DEBUG@{DEBUG}}
+\index{DEBUG@{DEBUG}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{DEBUG}{DEBUG}}
+{\footnotesize\ttfamily \#define DEBUG~1}
+
+
+
+The debug flag. If defined, the library will print errors and other debug information. 
+
+\Hypertarget{culkan_8h_ac55b2efa6c62078e4b7c24e315e8163f}\label{culkan_8h_ac55b2efa6c62078e4b7c24e315e8163f} 
+\index{culkan.h@{culkan.h}!vkCheckError@{vkCheckError}}
+\index{vkCheckError@{vkCheckError}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{vkCheckError}{vkCheckError}}
+{\footnotesize\ttfamily \#define vk\+Check\+Error(\begin{DoxyParamCaption}\item[{}]{vk\+Result }\end{DoxyParamCaption})~ if (\mbox{\hyperlink{culkan_8h_ad72dbcf6d0153db1b8d8a58001feed83}{DEBUG}}) \+\_\+\+\_\+check\+Culkan\+Result((\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}})\{vk\+Result, \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\+\_\+\+ERROR}}\}, \+\_\+\+\_\+\+FILE\+\_\+\+\_\+, \+\_\+\+\_\+\+LINE\+\_\+\+\_\+);}
+
+
+
+Like \doxylink{culkan_8h_a7ec9b90ebf4a497577d990b0984ecdab}{culkan\+Check\+Error()}, but for vulkan functions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vk\+Result} & the result of the vulkan function \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\Hypertarget{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}\label{culkan_8h_a62d133f4d06838ac16087a1b913eeeff} 
+\index{culkan.h@{culkan.h}!CulkanBindingType@{CulkanBindingType}}
+\index{CulkanBindingType@{CulkanBindingType}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{CulkanBindingType}{CulkanBindingType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}{Culkan\+Binding\+Type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STORAGE\_BUFFER@{STORAGE\_BUFFER}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!STORAGE\_BUFFER@{STORAGE\_BUFFER}}}\Hypertarget{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa5e911fc3ee91d19a4f9ff25613f656a8}\label{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa5e911fc3ee91d19a4f9ff25613f656a8} 
+STORAGE\+\_\+\+BUFFER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UNIFORM\_BUFFER@{UNIFORM\_BUFFER}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!UNIFORM\_BUFFER@{UNIFORM\_BUFFER}}}\Hypertarget{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa2f21aaec854e52d8488ce1f7bb06eb36}\label{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa2f21aaec854e52d8488ce1f7bb06eb36} 
+UNIFORM\+\_\+\+BUFFER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OUTPUT\_BUFFER@{OUTPUT\_BUFFER}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!OUTPUT\_BUFFER@{OUTPUT\_BUFFER}}}\Hypertarget{culkan_8h_a62d133f4d06838ac16087a1b913eeeffabe48c5bcb397997033ece3e037ab5eb2}\label{culkan_8h_a62d133f4d06838ac16087a1b913eeeffabe48c5bcb397997033ece3e037ab5eb2} 
+OUTPUT\+\_\+\+BUFFER&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{culkan_8h_a78c97593ea02e2221624010cd4258a98}\label{culkan_8h_a78c97593ea02e2221624010cd4258a98} 
+\index{culkan.h@{culkan.h}!CulkanErrCodes@{CulkanErrCodes}}
+\index{CulkanErrCodes@{CulkanErrCodes}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{CulkanErrCodes}{CulkanErrCodes}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98}{Culkan\+Err\+Codes}}}
+
+
+
+Enum that holds the different error codes that can be returned by the library. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NO\_ERROR@{NO\_ERROR}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!NO\_ERROR@{NO\_ERROR}}}\Hypertarget{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}\label{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94} 
+NO\+\_\+\+ERROR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{OUT\_OF\_BOUNDS\_BINDING@{OUT\_OF\_BOUNDS\_BINDING}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!OUT\_OF\_BOUNDS\_BINDING@{OUT\_OF\_BOUNDS\_BINDING}}}\Hypertarget{culkan_8h_a78c97593ea02e2221624010cd4258a98ad34629b5fe942a3917bbb80319178f08}\label{culkan_8h_a78c97593ea02e2221624010cd4258a98ad34629b5fe942a3917bbb80319178f08} 
+OUT\+\_\+\+OF\+\_\+\+BOUNDS\+\_\+\+BINDING&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FILE\_NOT\_FOUND@{FILE\_NOT\_FOUND}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!FILE\_NOT\_FOUND@{FILE\_NOT\_FOUND}}}\Hypertarget{culkan_8h_a78c97593ea02e2221624010cd4258a98abc27a6b909296003973e169faf52f52d}\label{culkan_8h_a78c97593ea02e2221624010cd4258a98abc27a6b909296003973e169faf52f52d} 
+FILE\+\_\+\+NOT\+\_\+\+FOUND&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{TOO\_MANY\_INVOCATIONS@{TOO\_MANY\_INVOCATIONS}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!TOO\_MANY\_INVOCATIONS@{TOO\_MANY\_INVOCATIONS}}}\Hypertarget{culkan_8h_a78c97593ea02e2221624010cd4258a98a175dcc3f0f9805389aa1fd2d7720c6b9}\label{culkan_8h_a78c97593ea02e2221624010cd4258a98a175dcc3f0f9805389aa1fd2d7720c6b9} 
+TOO\+\_\+\+MANY\+\_\+\+INVOCATIONS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{NOT\_ENOUGH\_MEMORY@{NOT\_ENOUGH\_MEMORY}!culkan.h@{culkan.h}}\index{culkan.h@{culkan.h}!NOT\_ENOUGH\_MEMORY@{NOT\_ENOUGH\_MEMORY}}}\Hypertarget{culkan_8h_a78c97593ea02e2221624010cd4258a98a2fa3114dc11f3a0dbfc8f2a3d141e2da}\label{culkan_8h_a78c97593ea02e2221624010cd4258a98a2fa3114dc11f3a0dbfc8f2a3d141e2da} 
+NOT\+\_\+\+ENOUGH\+\_\+\+MEMORY&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}\label{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5} 
+\index{culkan.h@{culkan.h}!culkanDestroy@{culkanDestroy}}
+\index{culkanDestroy@{culkanDestroy}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanDestroy()}{culkanDestroy()}}
+{\footnotesize\ttfamily void culkan\+Destroy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+
+
+Frees the memory of a \doxylink{structCulkan}{Culkan} instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to free the memory of \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_a9096af3d1c9d3884151786233bb14e2c}\label{culkan_8h_a9096af3d1c9d3884151786233bb14e2c} 
+\index{culkan.h@{culkan.h}!culkanGetBinding@{culkanGetBinding}}
+\index{culkanGetBinding@{culkanGetBinding}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanGetBinding()}{culkanGetBinding()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*} culkan\+Get\+Binding (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{uint32\+\_\+t}]{binding }\end{DoxyParamCaption})}
+
+
+
+Gets a \doxylink{structGPUVariable}{GPUVariable} from a \doxylink{structCulkan}{Culkan} instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to get the variable from \\
+\hline
+{\em binding} & the binding of the variable to get \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the variable 
+\end{DoxyReturn}
+\Hypertarget{culkan_8h_aeda029209fdb54528d9fd5e887caa4a0}\label{culkan_8h_aeda029209fdb54528d9fd5e887caa4a0} 
+\index{culkan.h@{culkan.h}!culkanInit@{culkanInit}}
+\index{culkanInit@{culkanInit}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanInit()}{culkanInit()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*} culkan\+Init (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structCulkanLayout}{Culkan\+Layout}} \texorpdfstring{$\ast$}{*}}]{layout,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{shader\+Path,  }\item[{\mbox{\hyperlink{structCulkanInvocations}{Culkan\+Invocations}}}]{work\+Groups }\end{DoxyParamCaption})}
+
+
+
+Initializes a \doxylink{structCulkan}{Culkan} instance. It allocates memory for the instance, so it should be freed after use by calling \doxylink{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}{culkan\+Destroy()} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em layout} & the layout of the shader to use \\
+\hline
+{\em shader\+Path} & the path to the shader to use \\
+\hline
+{\em work\+Groups} & the number of invocations to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the created \doxylink{structCulkan}{Culkan} instance 
+\end{DoxyReturn}
+\Hypertarget{culkan_8h_a50954529830b9f0ef6b9d8de1efb45ac}\label{culkan_8h_a50954529830b9f0ef6b9d8de1efb45ac} 
+\index{culkan.h@{culkan.h}!culkanReadBinding@{culkanReadBinding}}
+\index{culkanReadBinding@{culkanReadBinding}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanReadBinding()}{culkanReadBinding()}}
+{\footnotesize\ttfamily void culkan\+Read\+Binding (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{uint32\+\_\+t}]{binding,  }\item[{void \texorpdfstring{$\ast$}{*}}]{dst }\end{DoxyParamCaption})}
+
+
+
+Reads data from a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Read\+GPUVariable, if you want to read from a binding directly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to read from \\
+\hline
+{\em binding} & the binding to read from \\
+\hline
+{\em dst} & the destination to write the data to \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_abeb06417cbcaa7f633d8bcfe37da96e8}\label{culkan_8h_abeb06417cbcaa7f633d8bcfe37da96e8} 
+\index{culkan.h@{culkan.h}!culkanReadGPUVariable@{culkanReadGPUVariable}}
+\index{culkanReadGPUVariable@{culkanReadGPUVariable}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanReadGPUVariable()}{culkanReadGPUVariable()}}
+{\footnotesize\ttfamily void culkan\+Read\+GPUVariable (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}}]{variable,  }\item[{void \texorpdfstring{$\ast$}{*}}]{dst,  }\item[{\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}}]{result }\end{DoxyParamCaption})}
+
+
+
+Reads data from a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Read\+Binding, if you want explicit variable names. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em variable} & the variable to read from \\
+\hline
+{\em dst} & the destination to write the data to \\
+\hline
+{\em result} & the result of the operation \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_aeeac644d7805a13ed06867c75f21a845}\label{culkan_8h_aeeac644d7805a13ed06867c75f21a845} 
+\index{culkan.h@{culkan.h}!culkanRun@{culkanRun}}
+\index{culkanRun@{culkanRun}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanRun()}{culkanRun()}}
+{\footnotesize\ttfamily void culkan\+Run (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+
+
+Runs the shader of a \doxylink{structCulkan}{Culkan} instance. Should be called after setting up the instance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to run \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_a0d3a7399fd39df0832e7d199b5d941e2}\label{culkan_8h_a0d3a7399fd39df0832e7d199b5d941e2} 
+\index{culkan.h@{culkan.h}!culkanSetup@{culkanSetup}}
+\index{culkanSetup@{culkanSetup}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanSetup()}{culkanSetup()}}
+{\footnotesize\ttfamily void culkan\+Setup (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan }\end{DoxyParamCaption})}
+
+
+
+Sets up the \doxylink{structCulkan}{Culkan} instance. Should be called after writing to the bindings and before running the shader. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to set up \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_a0bc88286426ff7cdd0015969e90858dc}\label{culkan_8h_a0bc88286426ff7cdd0015969e90858dc} 
+\index{culkan.h@{culkan.h}!culkanWriteBinding@{culkanWriteBinding}}
+\index{culkanWriteBinding@{culkanWriteBinding}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanWriteBinding()}{culkanWriteBinding()}}
+{\footnotesize\ttfamily void culkan\+Write\+Binding (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCulkan}{Culkan}} \texorpdfstring{$\ast$}{*}}]{culkan,  }\item[{uint32\+\_\+t}]{binding,  }\item[{const void \texorpdfstring{$\ast$}{*}}]{src }\end{DoxyParamCaption})}
+
+
+
+Writes data to a binding of a \doxylink{structCulkan}{Culkan} instance. Can be preferred over culkan\+Write\+GPUVariable, if you want to write to a binding directly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em culkan} & the \doxylink{structCulkan}{Culkan} instance to write to \\
+\hline
+{\em binding} & the binding to write to \\
+\hline
+{\em src} & the data to write \\
+\hline
+\end{DoxyParams}
+\Hypertarget{culkan_8h_a145b2b9e6d424761175fad4485ef0948}\label{culkan_8h_a145b2b9e6d424761175fad4485ef0948} 
+\index{culkan.h@{culkan.h}!culkanWriteGPUVariable@{culkanWriteGPUVariable}}
+\index{culkanWriteGPUVariable@{culkanWriteGPUVariable}!culkan.h@{culkan.h}}
+\doxysubsubsection{\texorpdfstring{culkanWriteGPUVariable()}{culkanWriteGPUVariable()}}
+{\footnotesize\ttfamily void culkan\+Write\+GPUVariable (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structGPUVariable}{GPUVariable}} \texorpdfstring{$\ast$}{*}}]{variable,  }\item[{const void \texorpdfstring{$\ast$}{*}}]{src,  }\item[{\mbox{\hyperlink{structCulkanResult}{Culkan\+Result}} \texorpdfstring{$\ast$}{*}}]{result }\end{DoxyParamCaption})}
+
+
+
+Writes data to a \doxylink{structGPUVariable}{GPUVariable}. Can be preferred over culkan\+Write\+Binding, if you want explicit variable names. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em variable} & the variable to write to \\
+\hline
+{\em src} & the data to write \\
+\hline
+{\em result} & the result of the operation \\
+\hline
+\end{DoxyParams}

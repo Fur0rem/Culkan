@@ -1,0 +1,179 @@
+\doxysection{culkan.\+h}
+\hypertarget{culkan_8h_source}{}\label{culkan_8h_source}\index{src/culkan.h@{src/culkan.h}}
+\mbox{\hyperlink{culkan_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CULKAN\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CULKAN\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <vulkan/vulkan.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <vulkan/vulkan\_core.h>}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ DEBUG\ 1}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abf350750d0d4fabd8954c0f1e9bbae94}{NO\_ERROR}},}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98ad34629b5fe942a3917bbb80319178f08}{OUT\_OF\_BOUNDS\_BINDING}},}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98abc27a6b909296003973e169faf52f52d}{FILE\_NOT\_FOUND}},}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98a175dcc3f0f9805389aa1fd2d7720c6b9}{TOO\_MANY\_INVOCATIONS}},}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98a2fa3114dc11f3a0dbfc8f2a3d141e2da}{NOT\_ENOUGH\_MEMORY}},}
+\DoxyCodeLine{00029\ \}\ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98}{CulkanErrCodes}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00035\ \ \ \ \ VkResult\ \mbox{\hyperlink{structCulkanResult_afaf9b76b540f194dfac78b6d89bd963a}{vkResult}};}
+\DoxyCodeLine{00036\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a78c97593ea02e2221624010cd4258a98}{CulkanErrCodes}}\ \mbox{\hyperlink{structCulkanResult_a92c0426775527648fddcf76bf9d1e60d}{ckResult}};}
+\DoxyCodeLine{00037\ \}\ \mbox{\hyperlink{structCulkanResult}{CulkanResult}};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ CULKAN\_SUCCESS\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\ \ \ \ (CulkanResult)\ \{\ VK\_SUCCESS,\ SUCCESS\ \}}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ culkanCheckError(culkan)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\ \ \ \ if\ (DEBUG)\ \_\_checkCulkanResult((culkan)-\/>result,\ \_\_FILE\_\_,\ \_\_LINE\_\_);}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ culkanCheckErrorWithMessage(culkan,\ message)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\ \ \ \ if\ (DEBUG)\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ if\ ((culkan)-\/>result.ckResult\ !=\ NO\_ERROR)\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ fprintf(stderr,\ "{}ERROR\ :\ \%s\(\backslash\)n"{},\ message);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \_\_checkCulkanResult((culkan)-\/>result,\ \_\_FILE\_\_,\ \_\_LINE\_\_);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\ \ \ \ \}}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ vkCheckError(vkResult)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\ \ \ \ if\ (DEBUG)\ \_\_checkCulkanResult((CulkanResult)\{vkResult,\ NO\_ERROR\},\ \_\_FILE\_\_,\ \_\_LINE\_\_);}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ culkanCheckAllocation(variable)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\ \ \ \ if\ (DEBUG)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \_\_checkCulkanResult((variable)\ ==\ NULL\ ?\ (CulkanResult)\{VK\_ERROR\_OUT\_OF\_HOST\_MEMORY,\ NO\_ERROR\}\ :\ (CulkanResult)\{VK\_SUCCESS,\ NO\_ERROR\},\ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_FILE\_\_,\ \_\_LINE\_\_);}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00092\ \textcolor{comment}{//\ Warning\ that\ type*\ should\ be\ enclosed\ in\ parentheses\ but\ if\ i\ do\ it\ C++\ will\ cry}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ culkanMalloc(type,\ nbElems)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\ \ \ \ (\{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ type*\ ptr\ =\ (type*)malloc(sizeof(type)\ *\ (nbElems));\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ culkanCheckAllocation(ptr);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ ptr;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\ \ \ \ \})}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00101\ \ \ \ \ VkBufferCreateInfo*\ \mbox{\hyperlink{structGPUVariable_a5808a45833d820ac8f9be83ac561f4fb}{bufferCreateInfoVar}};}
+\DoxyCodeLine{00102\ \ \ \ \ VkBuffer*\ \mbox{\hyperlink{structGPUVariable_adc7157bb35fd1b1001c3ec0b2648194d}{vkBufferVar}};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ VkMemoryRequirements\ \mbox{\hyperlink{structGPUVariable_a979530a47183543cd911f77859f9e7b2}{memoryRequirementsVar}};}
+\DoxyCodeLine{00105\ \ \ \ \ VkMemoryAllocateInfo\ \mbox{\hyperlink{structGPUVariable_ae63db6de9f1aaaf331ba2ed5d47dd73e}{memoryAllocateInfoVar}};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{comment}{//\ TODO\ :\ see\ if\ they\ are\ needed}}
+\DoxyCodeLine{00108\ \ \ \ \ VkDevice\ \mbox{\hyperlink{structGPUVariable_a640c1d40da84f81b23eabb707b641301}{deviceVar}};}
+\DoxyCodeLine{00109\ \ \ \ \ VkDeviceMemory\ \mbox{\hyperlink{structGPUVariable_ac791105540c6bb65040d93e50951d999}{deviceMemoryVar}};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ VkDescriptorSetLayoutBinding*\ \mbox{\hyperlink{structGPUVariable_a321d3a7df86a5eb70da30843d66ff465}{layoutBindingVar}};}
+\DoxyCodeLine{00112\ \ \ \ \ VkDescriptorPoolSize*\ \mbox{\hyperlink{structGPUVariable_a787a5c1cc0323578ab4429338ae5265a}{poolSizeVar}};}
+\DoxyCodeLine{00113\ \ \ \ \ VkDescriptorBufferInfo*\ \mbox{\hyperlink{structGPUVariable_a7529facc0eda85078498a05546f86a96}{bufferInfoVar}};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structGPUVariable_adcb75d63f02de6c515865f09a3e8f1f0}{sizeOfVar}};}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{void}*\ \mbox{\hyperlink{structGPUVariable_a56e5fe8122318868e2653816f0aa9778}{dataVar}};}
+\DoxyCodeLine{00117\ \}\ \mbox{\hyperlink{structGPUVariable}{GPUVariable}};}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa5e911fc3ee91d19a4f9ff25613f656a8}{STORAGE\_BUFFER}}\ =\ VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER,}
+\DoxyCodeLine{00121\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeffa2f21aaec854e52d8488ce1f7bb06eb36}{UNIFORM\_BUFFER}}\ =\ VK\_DESCRIPTOR\_TYPE\_UNIFORM\_BUFFER,}
+\DoxyCodeLine{00122\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeffabe48c5bcb397997033ece3e037ab5eb2}{OUTPUT\_BUFFER}}\ =\ VK\_DESCRIPTOR\_TYPE\_STORAGE\_BUFFER,}
+\DoxyCodeLine{00123\ \}\ \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}{CulkanBindingType}};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structCulkanBinding_ab0c808730de08733a5b9b8c4b5839586}{size}};}
+\DoxyCodeLine{00127\ \ \ \ \ \mbox{\hyperlink{culkan_8h_a62d133f4d06838ac16087a1b913eeeff}{CulkanBindingType}}\ \mbox{\hyperlink{structCulkanBinding_a8762d5b3f31447deabfd6c6d0a6af50a}{type}};}
+\DoxyCodeLine{00128\ \}\ \mbox{\hyperlink{structCulkanBinding}{CulkanBinding}};}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ *\ Struct\ that\ holds\ the\ layout\ of\ the\ shader\ to\ communicate\ with\ the\ GPU}}
+\DoxyCodeLine{00132\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00133\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00134\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structCulkanLayout_af6c837c268e4970b63c3437f0ad0c8fb}{bindingCount}};}
+\DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{structCulkanBinding}{CulkanBinding}}*\ \mbox{\hyperlink{structCulkanLayout_a4c923c283bb8a03d662e20f9647da37f}{bindings}};}
+\DoxyCodeLine{00136\ \}\ \mbox{\hyperlink{structCulkanLayout}{CulkanLayout}};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00139\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structCulkanInvocations_ae06a4e2fc3cdbb85fb50b12eeeb4e138}{x}},\ y,\ z;}
+\DoxyCodeLine{00140\ \}\ \mbox{\hyperlink{structCulkanInvocations}{CulkanInvocations}};}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structCulkanLayout}{CulkanLayout}}*\ \mbox{\hyperlink{structCulkan_a5de788800c30c4cd68d0dff40b83bc3d}{layout}};}
+\DoxyCodeLine{00144\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{structCulkan_a330dd474c98b4e364496325ef2b8238d}{shaderPath}};}
+\DoxyCodeLine{00145\ \ \ \ \ \mbox{\hyperlink{structCulkanInvocations}{CulkanInvocations}}\ \mbox{\hyperlink{structCulkan_ad104922e203991ffb4237e6aec2a2962}{invocations}};}
+\DoxyCodeLine{00146\ \ \ \ \ \mbox{\hyperlink{structGPUVariable}{GPUVariable}}*\ \mbox{\hyperlink{structCulkan_afd827a02cf347629faa27aa3081423b9}{variables}};}
+\DoxyCodeLine{00147\ \ \ \ \ \mbox{\hyperlink{structCulkanResult}{CulkanResult}}\ \mbox{\hyperlink{structCulkan_a9b658ded43e6f47a551a389781b4e31c}{result}};}
+\DoxyCodeLine{00148\ \ \ \ \ VkApplicationInfo\ \mbox{\hyperlink{structCulkan_a844b2b81ad673cf0bc270cb719455d71}{appInfo}};}
+\DoxyCodeLine{00149\ \ \ \ \ VkInstanceCreateInfo\ \mbox{\hyperlink{structCulkan_a6ef9b69a383a4a667953994fb4e6fcae}{createInfo}};}
+\DoxyCodeLine{00150\ \ \ \ \ VkInstance\ \mbox{\hyperlink{structCulkan_a1eb7eba847e0f3aa8de4584ce636359a}{instance}};}
+\DoxyCodeLine{00151\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structCulkan_ae2849d21e020eab3bbfa5e6b4a631334}{physicalDeviceCount}};}
+\DoxyCodeLine{00152\ \ \ \ \ VkPhysicalDevice*\ \mbox{\hyperlink{structCulkan_ab0465abcabf594ce69bf9b7581f49c37}{physicalDevices}};}
+\DoxyCodeLine{00153\ \ \ \ \ VkPhysicalDevice\ \mbox{\hyperlink{structCulkan_ab828544fb9c8e3d2e781d871b55d863b}{physicalDevice}};}
+\DoxyCodeLine{00154\ \ \ \ \ VkPhysicalDeviceProperties\ \mbox{\hyperlink{structCulkan_aa4e33c83849985083cc9c86c06075f39}{deviceProperties}};}
+\DoxyCodeLine{00155\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structCulkan_ac05a42796b6a6b6340191e7ed6efb71c}{queueFamilyCount}};}
+\DoxyCodeLine{00156\ \ \ \ \ VkQueueFamilyProperties*\ \mbox{\hyperlink{structCulkan_a37bed5eaefed278fb692cc6774a3c3b3}{queueFamilies}};}
+\DoxyCodeLine{00157\ \ \ \ \ VkDeviceQueueCreateInfo\ \mbox{\hyperlink{structCulkan_a361c2eb98c2f65362a0755963c6a03df}{queueCreateInfo}};}
+\DoxyCodeLine{00158\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structCulkan_a2da8b4bfa27dd55f795b53cdcfc97a12}{family}};}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keywordtype}{float}*\ \mbox{\hyperlink{structCulkan_a7d03fc0fb9526133c2e3647b2f69c6ac}{queuePriorities}};}
+\DoxyCodeLine{00160\ \ \ \ \ VkDeviceCreateInfo\ \mbox{\hyperlink{structCulkan_ad540047480db39afd36fc228e0634d71}{deviceCreateInfo}};}
+\DoxyCodeLine{00161\ \ \ \ \ VkDevice\ \mbox{\hyperlink{structCulkan_acac4520df22fdac7cedf99eb9da7bb46}{device}};}
+\DoxyCodeLine{00162\ \ \ \ \ VkPhysicalDeviceMemoryProperties\ \mbox{\hyperlink{structCulkan_a199adda994a11caa52f7a17e1a9b8cc5}{memoryProperties}};}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \ \ \ \ VkDescriptorSetLayoutCreateInfo\ \mbox{\hyperlink{structCulkan_acf4dac1a1dbe60bd707fd130142cf145}{descriptorSetLayoutCreateInfo}};}
+\DoxyCodeLine{00165\ \ \ \ \ VkDescriptorSetLayout\ \mbox{\hyperlink{structCulkan_ab658605b0b352e40175b938f9a1825df}{descriptorSetLayout}};}
+\DoxyCodeLine{00166\ \ \ \ \ VkDescriptorPoolSize*\ \mbox{\hyperlink{structCulkan_a98a48f425948e09dd78131d13ac29d58}{poolSizeInfo}};}
+\DoxyCodeLine{00167\ \ \ \ \ VkDescriptorPoolSize*\ \mbox{\hyperlink{structCulkan_aab2dfb0bac3f8eb9eca67875cefc8ac0}{pPoolSizes}};}
+\DoxyCodeLine{00168\ \ \ \ \ VkDescriptorPoolCreateInfo\ \mbox{\hyperlink{structCulkan_a364c99b7a4c0ce94c2dc2474c271d72b}{descriptorPoolCreateInfo}};}
+\DoxyCodeLine{00169\ \ \ \ \ VkDescriptorPool\ \mbox{\hyperlink{structCulkan_abe401ef9521c1ee8fada883948f09fad}{descriptorPool}};}
+\DoxyCodeLine{00170\ \ \ \ \ VkDescriptorSetAllocateInfo\ \mbox{\hyperlink{structCulkan_af5edcaafdc33393694019d0c173aacf8}{descriptorSetAllocateInfo}};}
+\DoxyCodeLine{00171\ \ \ \ \ VkDescriptorSet\ \mbox{\hyperlink{structCulkan_a18b2e8a08d461775091e6b6abced5857}{descriptorSet}};}
+\DoxyCodeLine{00172\ \ \ \ \ VkWriteDescriptorSet**\ \mbox{\hyperlink{structCulkan_adde471861ae8a198a542c406b3bfb49e}{descriptorWritesVar}};}
+\DoxyCodeLine{00173\ \ \ \ \ VkPipelineLayoutCreateInfo\ \mbox{\hyperlink{structCulkan_ab7d8f3981dab1200ce26204c26cf1790}{pipelineLayoutCreateInfo}};}
+\DoxyCodeLine{00174\ \ \ \ \ VkPipelineLayout\ \mbox{\hyperlink{structCulkan_a9eb7e3328c512d75c440fcb54f2bb6f9}{pipelineLayout}};}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \mbox{\hyperlink{structCulkan_ae40c6f8a5c3129a3dfc87711bb501925}{fileSize}};}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{structCulkan_ae4d653ac9eec66070b0b4d1d7a568b94}{fileName}};}
+\DoxyCodeLine{00178\ \ \ \ \ uint32\_t*\ \mbox{\hyperlink{structCulkan_a51c33ff7c7a2552e5a689e3562f4f135}{shaderBuffer}};}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \ \ VkShaderModuleCreateInfo\ \mbox{\hyperlink{structCulkan_a16445dc78669fa5750d1295114873458}{shaderModuleCreateInfo}};}
+\DoxyCodeLine{00181\ \ \ \ \ VkShaderModule\ \mbox{\hyperlink{structCulkan_ad000f27ef3910d8c36cf641f7f65d265}{shaderModule}};}
+\DoxyCodeLine{00182\ \ \ \ \ VkPipelineShaderStageCreateInfo\ \mbox{\hyperlink{structCulkan_a3e419b20e3ece35996b20e30a95889d4}{stageCreateInfo}};}
+\DoxyCodeLine{00183\ \ \ \ \ VkComputePipelineCreateInfo\ \mbox{\hyperlink{structCulkan_ace6db1e4e8418a1c434efe5a3a445046}{pipelineCreateInfo}};}
+\DoxyCodeLine{00184\ \ \ \ \ VkPipeline\ \mbox{\hyperlink{structCulkan_a31b53c7620c99d8809d0d79460653867}{pipeline}};}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ VkCommandPoolCreateInfo\ \mbox{\hyperlink{structCulkan_aaabafe443db352b9b6489ad1ed296b35}{commandPoolCreateInfo}};}
+\DoxyCodeLine{00187\ \ \ \ \ VkCommandPool\ \mbox{\hyperlink{structCulkan_a0cd101f15bd6a8e0255a0105b3a85715}{commandPool}};}
+\DoxyCodeLine{00188\ \ \ \ \ VkCommandBufferAllocateInfo\ \mbox{\hyperlink{structCulkan_a21ff364ecd9ff72392e43b9a6c36161d}{commandBufferAllocateInfo}};}
+\DoxyCodeLine{00189\ \ \ \ \ VkCommandBuffer\ \mbox{\hyperlink{structCulkan_aac38df3bb0a8d750e4c642dd710c253c}{commandBuffer}};}
+\DoxyCodeLine{00190\ \ \ \ \ VkCommandBufferBeginInfo\ \mbox{\hyperlink{structCulkan_a5c274c4a2cddc315e5811f6f443fe76b}{commandBufferBeginInfo}};}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ VkFence\ \mbox{\hyperlink{structCulkan_a57f6d30f6099b4ca92c959f898eb2789}{computeFence}};}
+\DoxyCodeLine{00193\ \ \ \ \ VkFenceCreateInfo\ \mbox{\hyperlink{structCulkan_aa8c564dac3cf8f31b63dbec4e5dd6558}{fenceCreateInfo}};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ VkQueue\ \mbox{\hyperlink{structCulkan_aa0c3468db771f1f789be2706c8d34774}{queue}};}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00197\ \ \ \ \ VkCommandBuffer*\ \mbox{\hyperlink{structCulkan_a62d529aadf77cc7f59d949b9d31503de}{commandBuffers}};}
+\DoxyCodeLine{00198\ \}\ \mbox{\hyperlink{structCulkan}{Culkan}};}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00206\ \mbox{\hyperlink{structGPUVariable}{GPUVariable}}*\ \mbox{\hyperlink{culkan_8h_a9096af3d1c9d3884151786233bb14e2c}{culkanGetBinding}}(\mbox{\hyperlink{structCulkan}{Culkan}}*\ culkan,\ uint32\_t\ binding);}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00214\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_a145b2b9e6d424761175fad4485ef0948}{culkanWriteGPUVariable}}(\mbox{\hyperlink{structGPUVariable}{GPUVariable}}*\ variable,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ src,\ \mbox{\hyperlink{structCulkanResult}{CulkanResult}}*\ result);}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00222\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_a0bc88286426ff7cdd0015969e90858dc}{culkanWriteBinding}}(\mbox{\hyperlink{structCulkan}{Culkan}}*\ culkan,\ uint32\_t\ binding,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ src);}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00230\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_abeb06417cbcaa7f633d8bcfe37da96e8}{culkanReadGPUVariable}}(\mbox{\hyperlink{structGPUVariable}{GPUVariable}}*\ variable,\ \textcolor{keywordtype}{void}*\ dst,\ \mbox{\hyperlink{structCulkanResult}{CulkanResult}}*\ result);}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00238\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_a50954529830b9f0ef6b9d8de1efb45ac}{culkanReadBinding}}(\mbox{\hyperlink{structCulkan}{Culkan}}*\ culkan,\ uint32\_t\ binding,\ \textcolor{keywordtype}{void}*\ dst);}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00247\ \mbox{\hyperlink{structCulkan}{Culkan}}*\ \mbox{\hyperlink{culkan_8h_aeda029209fdb54528d9fd5e887caa4a0}{culkanInit}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{structCulkanLayout}{CulkanLayout}}*\ layout,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ shaderPath,\ \mbox{\hyperlink{structCulkanInvocations}{CulkanInvocations}}\ workGroups);}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00254\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_a0d3a7399fd39df0832e7d199b5d941e2}{culkanSetup}}(\mbox{\hyperlink{structCulkan}{Culkan}}*\ culkan);}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00260\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_aeeac644d7805a13ed06867c75f21a845}{culkanRun}}(\mbox{\hyperlink{structCulkan}{Culkan}}*\ culkan);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00266\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{culkan_8h_a6ab354f4979edbe0dc23e64b26129ba5}{culkanDestroy}}(\mbox{\hyperlink{structCulkan}{Culkan}}*\ culkan);}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ CULKAN\_H}}
+
+\end{DoxyCode}

@@ -1,3 +1,8 @@
+/**
+ * @file culkan.c
+ * @brief Internal implementation of the Culkan library
+ */
+
 #include "culkan.h"
 #include <stddef.h>
 #include <stdint.h>
@@ -26,7 +31,13 @@ const char* culkanErrCodeToString(CulkanErrCodes code) {
 }
 
 // TODO : Maybe make these two generic so you can call either one with a CulkanResult, VkResult or Culkan
-void __checkCulkanResult(CulkanResult result, const char* file, int line) {
+
+/**
+ * @brief Check if the result of a Vulkan function is an error
+ * @param result The result of the Vulkan function
+ * @param file The file where the error happened
+ */
+static void __checkCulkanResult(CulkanResult result, const char* file, int line) {
 	int8_t should_exit = 0;
 	if (result.vkResult != VK_SUCCESS) {
 		fprintf(stderr, "Vulkan error at %s:%d: %s (%d)\n", file, line, string_VkResult(result.vkResult), result.vkResult);
@@ -226,6 +237,16 @@ VkBufferUsageFlags toVkBufferUsageFlags(CulkanBindingType type) {
 	}
 }
 
+// Allocate all the memory needed for the variables and bindings
+void culkanGPUAlloc(Culkan* culkan) {
+	culkan->variables = culkanMalloc(GPUVariable, culkan->layout->bindingCount);
+	for (uint32_t binding_idx = 0; binding_idx < culkan->layout->bindingCount; binding_idx++) {
+		VkBufferUsageFlags usage = toVkBufferUsageFlags(culkan->layout->bindings[binding_idx].type);
+		culkan->variables[binding_idx] = *createGPUVariable(culkan->layout->bindings[binding_idx].size, usage, binding_idx, culkan->family,
+															culkan->device, &culkan->memoryProperties, &culkan->result);
+	}
+}
+
 Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInvocations invocations) {
 	Culkan* culkan = culkanMalloc(Culkan, 1);
 	culkan->layout = layout;
@@ -272,11 +293,9 @@ Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInv
 	// Check for memory
 	if (culkan->deviceProperties.limits.maxComputeWorkGroupInvocations < culkan->invocations.x * culkan->invocations.y * culkan->invocations.z) {
 		culkan->result.ckResult = TOO_MANY_INVOCATIONS;
-		const int MESSAGE_SIZE = 60;
-		char message[MESSAGE_SIZE];
-		snprintf(message, MESSAGE_SIZE, "Max invocations: %d, requested invocations: %d",
-				 culkan->deviceProperties.limits.maxComputeWorkGroupInvocations,
-				 culkan->invocations.x * culkan->invocations.y * culkan->invocations.z);
+		char message[60];
+		sprintf(message, "Max invocations: %d, requested invocations: %d", culkan->deviceProperties.limits.maxComputeWorkGroupInvocations,
+				culkan->invocations.x * culkan->invocations.y * culkan->invocations.z);
 		culkanCheckErrorWithMessage(culkan, message);
 	}
 
@@ -527,16 +546,6 @@ void culkanRun(Culkan* culkan) {
 	vkQueueSubmit(culkan->queue, 1, &submitInfo, culkan->computeFence);
 	vkWaitForFences(culkan->device, 1, &culkan->computeFence, VK_TRUE, UINT64_MAX);
 	vkDestroyFence(culkan->device, culkan->computeFence, NULL);
-}
-
-// Allocate all the memory needed for the variables and bindings
-void culkanGPUAlloc(Culkan* culkan) {
-	culkan->variables = culkanMalloc(GPUVariable, culkan->layout->bindingCount);
-	for (uint32_t binding_idx = 0; binding_idx < culkan->layout->bindingCount; binding_idx++) {
-		VkBufferUsageFlags usage = toVkBufferUsageFlags(culkan->layout->bindings[binding_idx].type);
-		culkan->variables[binding_idx] = *createGPUVariable(culkan->layout->bindings[binding_idx].size, usage, binding_idx, culkan->family,
-															culkan->device, &culkan->memoryProperties, &culkan->result);
-	}
 }
 
 void culkanDestroy(Culkan* culkan) {
