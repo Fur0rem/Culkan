@@ -17,4 +17,4 @@ example_matrix_sum:
 
 # Remove every file which is not a source file (doesnt end in .c or .h or .comp in samples)
 clean_samples:
-	cd $(SAMPLES_DIR) && rm -f $(filter-out %.c %.h %.comp, $(wildcard *))
+	cd $(SAMPLES_DIR) && rm -f $(shell ls | grep -v -E '\.c|\.h|\.comp')

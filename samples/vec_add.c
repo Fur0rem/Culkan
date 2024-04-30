@@ -35,14 +35,18 @@ int main() {
         }
     };
 
+
     Culkan* culkan = culkanInit(&layout, "vec_add.spv", (CulkanInvocations) {1024, 1, 1});
 
-    culkanWriteBinding(culkan, 0, arrayA);
-    culkanWriteBinding(culkan, 1, arrayB);
-    culkanWriteBinding(culkan, 3, &array_size);
+    GPUVariable* GPUArrayA = culkanGetBinding(culkan, 0);
+    GPUVariable* GPUArrayB = culkanGetBinding(culkan, 1);
+    GPUVariable* GPUArraySize = culkanGetBinding(culkan, 3);
+
+    culkanWriteGPUVariable(GPUArrayA, arrayA, &culkan->result);
+    culkanWriteGPUVariable(GPUArrayB, arrayB, &culkan->result);
+    culkanWriteGPUVariable(GPUArraySize, &array_size, &culkan->result);
 
     culkanSetup(culkan);
-
     culkanRun(culkan);
 
     float* result = malloc(array_size * sizeof(float));

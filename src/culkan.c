@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <vulkan/vk_enum_string_helper.h>
 #include <vulkan/vulkan_core.h>
 
 const char* culkanErrCodeToString(CulkanErrCodes code) {
@@ -24,24 +25,15 @@ const char* culkanErrCodeToString(CulkanErrCodes code) {
 	}
 }
 
-const char* vkResultToString(VkResult result) {
-	switch (result) {
-		case VK_SUCCESS:
-			return "Success";
-		// TODO : Write more cases
-		default:
-			return "Unknown error";
-	}
-}
-
 // TODO : Maybe make these two generic so you can call either one with a CulkanResult, VkResult or Culkan
 void __checkCulkanResult(CulkanResult result, const char* file, int line) {
 	int8_t should_exit = 0;
 	if (result.vkResult != VK_SUCCESS) {
-		printf("Vulkan error at %s:%d: %s (%d)\n", file, line, vkResultToString(result.vkResult), result.vkResult);
+		fprintf(stderr, "Vulkan error at %s:%d: %s (%d)\n", file, line, string_VkResult(result.vkResult), result.vkResult);
+		should_exit = 1;
 	}
 	if (result.ckResult != NO_ERROR) {
-		printf("Culkan error at %s:%d: %s\n", file, line, culkanErrCodeToString(result.ckResult));
+		fprintf(stderr, "Culkan error at %s:%d: %s\n", file, line, culkanErrCodeToString(result.ckResult));
 		should_exit = 1;
 	}
 	if (should_exit) {
@@ -49,7 +41,9 @@ void __checkCulkanResult(CulkanResult result, const char* file, int line) {
 	}
 }
 
-void checkCulkanError(Culkan* culkan, const char* file, int line) { __checkCulkanResult(culkan->result, file, line); }
+void checkCulkanError(Culkan* culkan, const char* file, int line) {
+	__checkCulkanResult(culkan->result, file, line);
+}
 
 VkWriteDescriptorSet* createDescriptorSetWrite(VkDescriptorSet descriptorSet, VkDescriptorBufferInfo* bufferInfo, uint32_t binding) {
 	VkWriteDescriptorSet* descriptorWrite = culkanMalloc(VkWriteDescriptorSet, 1);
@@ -183,7 +177,15 @@ GPUVariable* createGPUVariable(size_t sizeOfVar, VkBufferUsageFlags usage, uint3
 	return variable;
 }
 
-void writeGPUVariable(GPUVariable* variable, const void* src, CulkanResult* result) {
+GPUVariable* culkanGetBinding(Culkan* culkan, uint32_t binding) {
+	if (binding >= culkan->layout->bindingCount) {
+		culkan->result = (CulkanResult){VK_ERROR_UNKNOWN, OUT_OF_BOUNDS_BINDING};
+		culkanCheckError(culkan);
+	}
+	return &culkan->variables[binding];
+}
+
+void culkanWriteGPUVariable(GPUVariable* variable, const void* src, CulkanResult* result) {
 	result->vkResult = vkMapMemory(variable->deviceVar, variable->deviceMemoryVar, 0, VK_WHOLE_SIZE, 0, &variable->dataVar);
 	vkCheckError(result->vkResult);
 	memcpy(variable->dataVar, src, variable->sizeOfVar);
@@ -195,10 +197,10 @@ void culkanWriteBinding(Culkan* culkan, uint32_t binding, const void* src) {
 		culkan->result = (CulkanResult){VK_ERROR_UNKNOWN, OUT_OF_BOUNDS_BINDING};
 		return;
 	}
-	writeGPUVariable(&culkan->variables[binding], src, &culkan->result);
+	culkanWriteGPUVariable(&culkan->variables[binding], src, &culkan->result);
 }
 
-void readGPUVariable(GPUVariable* variable, void* dst, CulkanResult* result) {
+void culkanReadGPUVariable(GPUVariable* variable, void* dst, CulkanResult* result) {
 	result->vkResult = vkMapMemory(variable->deviceVar, variable->deviceMemoryVar, 0, VK_WHOLE_SIZE, 0, &variable->dataVar);
 	vkCheckError(result->vkResult);
 	memcpy(dst, variable->dataVar, variable->sizeOfVar);
@@ -210,7 +212,7 @@ void culkanReadBinding(Culkan* culkan, uint32_t binding, void* dst) {
 		culkan->result = (CulkanResult){VK_ERROR_UNKNOWN, OUT_OF_BOUNDS_BINDING};
 		culkanCheckError(culkan);
 	}
-	readGPUVariable(&culkan->variables[binding], dst, &culkan->result);
+	culkanReadGPUVariable(&culkan->variables[binding], dst, &culkan->result);
 }
 
 VkBufferUsageFlags toVkBufferUsageFlags(CulkanBindingType type) {
@@ -270,9 +272,11 @@ Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInv
 	// Check for memory
 	if (culkan->deviceProperties.limits.maxComputeWorkGroupInvocations < culkan->invocations.x * culkan->invocations.y * culkan->invocations.z) {
 		culkan->result.ckResult = TOO_MANY_INVOCATIONS;
-		char message[100];
-		sprintf(message, "Max invocations: %d, requested invocations: %d", culkan->deviceProperties.limits.maxComputeWorkGroupInvocations,
-				culkan->invocations.x * culkan->invocations.y * culkan->invocations.z);
+		const int MESSAGE_SIZE = 60;
+		char message[MESSAGE_SIZE];
+		snprintf(message, MESSAGE_SIZE, "Max invocations: %d, requested invocations: %d",
+				 culkan->deviceProperties.limits.maxComputeWorkGroupInvocations,
+				 culkan->invocations.x * culkan->invocations.y * culkan->invocations.z);
 		culkanCheckErrorWithMessage(culkan, message);
 	}
 

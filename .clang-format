@@ -11,5 +11,6 @@ BraceWrapping:
 ColumnLimit: 150
 IndentCaseLabels: true
 AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
 ---
 
