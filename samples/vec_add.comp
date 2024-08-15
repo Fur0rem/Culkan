@@ -19,7 +19,10 @@ layout(binding = 3) uniform vecSize {
 layout(local_size_x = 1024, local_size_y = 1, local_size_z = 1) in;
 void main() {
     uint index = gl_GlobalInvocationID.x;
-    if (index < size) {
+    /*if (index < size) {
         vecOutData[index] = vecAData[index] + vecBData[index];
+    }*/
+    for (uint idx = gl_GlobalInvocationID.x; idx < size; idx += 1024) {
+        vecOutData[idx] = vecAData[idx] + vecBData[idx];
     }
 }

@@ -58,71 +58,71 @@ void checkCulkanError(Culkan* culkan, const char* file, int line) {
 
 VkWriteDescriptorSet* createDescriptorSetWrite(VkDescriptorSet descriptorSet, VkDescriptorBufferInfo* bufferInfo, uint32_t binding) {
 	VkWriteDescriptorSet* descriptorWrite = culkanMalloc(VkWriteDescriptorSet, 1);
-	*descriptorWrite = (VkWriteDescriptorSet){
-		.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-		.pNext = NULL,
-		.dstSet = descriptorSet,
-		.dstBinding = binding,
-		.dstArrayElement = 0,
-		.descriptorCount = 1,
-		.descriptorType = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
-		.pImageInfo = NULL,
-		.pBufferInfo = bufferInfo,
-		.pTexelBufferView = NULL,
-	};
+	*descriptorWrite					  = (VkWriteDescriptorSet){
+							 .sType			   = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+							 .pNext			   = NULL,
+							 .dstSet		   = descriptorSet,
+							 .dstBinding	   = binding,
+							 .dstArrayElement  = 0,
+							 .descriptorCount  = 1,
+							 .descriptorType   = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+							 .pImageInfo	   = NULL,
+							 .pBufferInfo	   = bufferInfo,
+							 .pTexelBufferView = NULL,
+	 };
 	return descriptorWrite;
 }
 
 VkDescriptorBufferInfo* createDescriptorBufferInfo(VkBuffer buffer, uint32_t size) {
 	VkDescriptorBufferInfo* bufferInfo = culkanMalloc(VkDescriptorBufferInfo, 1);
-	*bufferInfo = (VkDescriptorBufferInfo){
-		.buffer = buffer,
-		.offset = 0,
-		.range = size,
-	};
+	*bufferInfo						   = (VkDescriptorBufferInfo){
+							   .buffer = buffer,
+							   .offset = 0,
+							   .range  = size,
+	   };
 	return bufferInfo;
 }
 
 VkDescriptorSetLayoutBinding* createDescriptorSetLayoutBinding(uint32_t binding, VkDescriptorType descriptorType, VkShaderStageFlags stageFlags) {
 	VkDescriptorSetLayoutBinding* layoutBinding = culkanMalloc(VkDescriptorSetLayoutBinding, 1);
-	*layoutBinding = (VkDescriptorSetLayoutBinding){
-		.binding = binding,
-		.descriptorType = descriptorType,
-		.descriptorCount = 1,
-		.stageFlags = stageFlags,
-		.pImmutableSamplers = NULL,
-	};
+	*layoutBinding								= (VkDescriptorSetLayoutBinding){
+									 .binding			 = binding,
+									 .descriptorType	 = descriptorType,
+									 .descriptorCount	 = 1,
+									 .stageFlags		 = stageFlags,
+									 .pImmutableSamplers = NULL,
+	 };
 	return layoutBinding;
 }
 
 VkBufferCreateInfo* createBufferCreateInfo(uint32_t size, VkBufferUsageFlags usage, uint32_t family) {
 	VkBufferCreateInfo* bufferCreateInfo = culkanMalloc(VkBufferCreateInfo, 1);
-	*bufferCreateInfo = (VkBufferCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.size = size,
-		.usage = usage,
-		.sharingMode = VK_SHARING_MODE_EXCLUSIVE,
-		.queueFamilyIndexCount = 1,
-		.pQueueFamilyIndices = &family,
-	};
+	*bufferCreateInfo					 = (VkBufferCreateInfo){
+						   .sType				  = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO,
+						   .pNext				  = NULL,
+						   .flags				  = 0,
+						   .size				  = size,
+						   .usage				  = usage,
+						   .sharingMode			  = VK_SHARING_MODE_EXCLUSIVE,
+						   .queueFamilyIndexCount = 1,
+						   .pQueueFamilyIndices	  = &family,
+	   };
 	return bufferCreateInfo;
 }
 
 VkBuffer* createBuffer(VkDevice device, VkBufferCreateInfo* bufferCreateInfo) {
 	VkBuffer* buffer = culkanMalloc(VkBuffer, 1);
-	VkResult result = vkCreateBuffer(device, bufferCreateInfo, NULL, buffer);
+	VkResult  result = vkCreateBuffer(device, bufferCreateInfo, NULL, buffer);
 	vkCheckError(result);
 	return buffer;
 }
 
 VkDescriptorPoolSize* createDescriptorPoolSize(VkDescriptorType descriptorType, uint32_t descriptorCount) {
 	VkDescriptorPoolSize* poolSize = culkanMalloc(VkDescriptorPoolSize, 1);
-	*poolSize = (VkDescriptorPoolSize){
-		.type = descriptorType,
-		.descriptorCount = descriptorCount,
-	};
+	*poolSize					   = (VkDescriptorPoolSize){
+							 .type			  = descriptorType,
+							 .descriptorCount = descriptorCount,
+	 };
 	return poolSize;
 }
 
@@ -136,7 +136,11 @@ uint32_t* culkanOpenShader(const char* filename, size_t* fileSize, Culkan* culka
 	*fileSize = ftell(file);
 	rewind(file);
 	uint32_t* buffer = culkanMalloc(uint32_t, *fileSize);
-	fread(buffer, *fileSize, 1, file);
+	size_t	  n_read = fread(buffer, *fileSize, 1, file);
+	if (n_read != 1) {
+		culkan->result.ckResult = FILE_NOT_FOUND;
+		culkanCheckErrorWithMessage(culkan, filename);
+	}
 	fclose(file);
 	culkan->result.ckResult = NO_ERROR;
 	return buffer;
@@ -157,16 +161,16 @@ void freeGPUVariable(GPUVariable* variable) {
 
 GPUVariable* createGPUVariable(size_t sizeOfVar, VkBufferUsageFlags usage, uint32_t binding, uint32_t family, VkDevice device,
 							   VkPhysicalDeviceMemoryProperties* memoryProperties, CulkanResult* result) {
-	GPUVariable* variable = culkanMalloc(GPUVariable, 1);
+	GPUVariable* variable		  = culkanMalloc(GPUVariable, 1);
 	variable->bufferCreateInfoVar = createBufferCreateInfo(sizeOfVar, usage, family);
-	variable->vkBufferVar = createBuffer(device, variable->bufferCreateInfoVar);
-	variable->sizeOfVar = sizeOfVar;
-	variable->deviceVar = device;
+	variable->vkBufferVar		  = createBuffer(device, variable->bufferCreateInfoVar);
+	variable->sizeOfVar			  = sizeOfVar;
+	variable->deviceVar			  = device;
 	vkGetBufferMemoryRequirements(device, *variable->vkBufferVar, &variable->memoryRequirementsVar);
 	variable->memoryAllocateInfoVar = (VkMemoryAllocateInfo){
-		.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
-		.pNext = NULL,
-		.allocationSize = variable->memoryRequirementsVar.size,
+		.sType			 = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO,
+		.pNext			 = NULL,
+		.allocationSize	 = variable->memoryRequirementsVar.size,
 		.memoryTypeIndex = 0,
 	};
 	for (uint32_t i = 0; i < memoryProperties->memoryTypeCount; i++) {
@@ -182,8 +186,8 @@ GPUVariable* createGPUVariable(size_t sizeOfVar, VkBufferUsageFlags usage, uint3
 	vkCheckError(result->vkResult);
 
 	variable->layoutBindingVar = createDescriptorSetLayoutBinding(binding, VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, VK_SHADER_STAGE_COMPUTE_BIT);
-	variable->poolSizeVar = createDescriptorPoolSize(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1);
-	variable->bufferInfoVar = createDescriptorBufferInfo(*variable->vkBufferVar, variable->sizeOfVar);
+	variable->poolSizeVar	   = createDescriptorPoolSize(VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, 1);
+	variable->bufferInfoVar	   = createDescriptorBufferInfo(*variable->vkBufferVar, variable->sizeOfVar);
 
 	return variable;
 }
@@ -241,43 +245,13 @@ VkBufferUsageFlags toVkBufferUsageFlags(CulkanBindingType type) {
 void culkanGPUAlloc(Culkan* culkan) {
 	culkan->variables = culkanMalloc(GPUVariable, culkan->layout->bindingCount);
 	for (uint32_t binding_idx = 0; binding_idx < culkan->layout->bindingCount; binding_idx++) {
-		VkBufferUsageFlags usage = toVkBufferUsageFlags(culkan->layout->bindings[binding_idx].type);
+		VkBufferUsageFlags usage	   = toVkBufferUsageFlags(culkan->layout->bindings[binding_idx].type);
 		culkan->variables[binding_idx] = *createGPUVariable(culkan->layout->bindings[binding_idx].size, usage, binding_idx, culkan->family,
 															culkan->device, &culkan->memoryProperties, &culkan->result);
 	}
 }
 
-Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInvocations invocations) {
-	Culkan* culkan = culkanMalloc(Culkan, 1);
-	culkan->layout = layout;
-	culkan->shaderPath = shaderPath;
-	culkan->invocations = invocations;
-
-	culkan->appInfo = (VkApplicationInfo){
-		// TODO : Maybe let the user choose the API version?
-		.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-		.pNext = NULL,
-		.pApplicationName = "CulkanApp",
-		.applicationVersion = 0,
-		.pEngineName = NULL,
-		.engineVersion = 0,
-		.apiVersion = VK_API_VERSION_1_3,
-	};
-
-	culkan->createInfo = (VkInstanceCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.pApplicationInfo = &culkan->appInfo,
-		.enabledLayerCount = 0,
-		.ppEnabledLayerNames = NULL,
-		.enabledExtensionCount = 0,
-		.ppEnabledExtensionNames = NULL,
-	};
-
-	culkan->result.vkResult = vkCreateInstance(&culkan->createInfo, NULL, &culkan->instance);
-	culkanCheckError(culkan);
-
+void culkanGetPhysicalDevices(Culkan* culkan) {
 	culkan->result.vkResult = vkEnumeratePhysicalDevices(culkan->instance, &culkan->physicalDeviceCount, NULL);
 	culkanCheckError(culkan);
 
@@ -286,66 +260,11 @@ Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInv
 	culkan->result.vkResult = vkEnumeratePhysicalDevices(culkan->instance, &culkan->physicalDeviceCount, culkan->physicalDevices);
 	culkanCheckError(culkan);
 
+	// TODO : Choose the best physical device
 	culkan->physicalDevice = culkan->physicalDevices[0];
+}
 
-	vkGetPhysicalDeviceProperties(culkan->physicalDevice, &culkan->deviceProperties);
-
-	// Check for memory
-	if (culkan->deviceProperties.limits.maxComputeWorkGroupInvocations < culkan->invocations.x * culkan->invocations.y * culkan->invocations.z) {
-		culkan->result.ckResult = TOO_MANY_INVOCATIONS;
-		char message[60];
-		sprintf(message, "Max invocations: %d, requested invocations: %d", culkan->deviceProperties.limits.maxComputeWorkGroupInvocations,
-				culkan->invocations.x * culkan->invocations.y * culkan->invocations.z);
-		culkanCheckErrorWithMessage(culkan, message);
-	}
-
-	vkGetPhysicalDeviceQueueFamilyProperties(culkan->physicalDevice, &culkan->queueFamilyCount, NULL);
-	culkan->queueFamilies = culkanMalloc(VkQueueFamilyProperties, culkan->queueFamilyCount);
-	vkGetPhysicalDeviceQueueFamilyProperties(culkan->physicalDevice, &culkan->queueFamilyCount, culkan->queueFamilies);
-
-	uint32_t family = 0;
-	while (family < culkan->queueFamilyCount && !(culkan->queueFamilies[family].queueFlags & VK_QUEUE_COMPUTE_BIT)) {
-		family++;
-	}
-
-	if (family == culkan->queueFamilyCount) {
-		printf("No compute queue family found\n");
-		exit(1);
-	}
-
-	culkan->queuePriorities = (float*)(float[]){1.0F}; // Obliged to do double cast because C++ won't allow it otherwise (I hate C++)
-	const VkDeviceQueueCreateInfo queueCreateInfo = {
-		.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.queueFamilyIndex = family,
-		.queueCount = 1,
-		.pQueuePriorities = culkan->queuePriorities,
-	};
-
-	culkan->deviceCreateInfo = (VkDeviceCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.queueCreateInfoCount = 1,
-		.pQueueCreateInfos = &queueCreateInfo,
-		.enabledLayerCount = 0,
-		.ppEnabledLayerNames = NULL,
-		.enabledExtensionCount = 0,
-		.ppEnabledExtensionNames = NULL,
-		.pEnabledFeatures = NULL,
-	};
-
-	culkan->result.vkResult = vkCreateDevice(culkan->physicalDevice, &culkan->deviceCreateInfo, NULL, &culkan->device);
-	culkanCheckError(culkan);
-
-	vkGetPhysicalDeviceMemoryProperties(culkan->physicalDevice, &culkan->memoryProperties);
-	culkanGPUAlloc(culkan);
-	culkanCheckError(culkan);
-
-	culkan->descriptorWritesVar = culkanMalloc(VkWriteDescriptorSet*, culkan->layout->bindingCount);
-	// Unitialised pointers
-
+void culkanCheckForEnoughMemory(Culkan* culkan) {
 	// Check for memory (heap size requested vs heap size available)
 	// TODO : i think it doesn't work lol
 	uint32_t heap_idx;
@@ -364,7 +283,106 @@ Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInv
 					culkan->variables[heap_idx].memoryRequirementsVar.size, culkan->memoryProperties.memoryHeaps[heap_idx].size);
 		}
 	}
+}
 
+void culkanCheckInvocations(Culkan* culkan) {
+	if (culkan->deviceProperties.limits.maxComputeWorkGroupInvocations < culkan->invocations.x * culkan->invocations.y * culkan->invocations.z) {
+		culkan->result.ckResult = TOO_MANY_INVOCATIONS;
+		char message[70];
+		sprintf(message, "Max invocations: %d, requested invocations: %d", culkan->deviceProperties.limits.maxComputeWorkGroupInvocations,
+				culkan->invocations.x * culkan->invocations.y * culkan->invocations.z);
+		culkanCheckErrorWithMessage(culkan, message);
+	}
+}
+
+Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInvocations invocations) {
+	Culkan* culkan		= culkanMalloc(Culkan, 1);
+	culkan->layout		= layout;
+	culkan->shaderPath	= shaderPath;
+	culkan->invocations = invocations;
+
+	culkan->appInfo = (VkApplicationInfo){
+		// TODO : Maybe let the user choose the API version?
+		.sType				= VK_STRUCTURE_TYPE_APPLICATION_INFO,
+		.pNext				= NULL,
+		.pApplicationName	= "CulkanApp",
+		.applicationVersion = 0,
+		.pEngineName		= NULL,
+		.engineVersion		= 0,
+		.apiVersion			= VK_API_VERSION_1_3,
+	};
+
+	culkan->createInfo = (VkInstanceCreateInfo){
+		.sType					 = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+		.pNext					 = NULL,
+		.flags					 = 0,
+		.pApplicationInfo		 = &culkan->appInfo,
+		.enabledLayerCount		 = 0,
+		.ppEnabledLayerNames	 = NULL,
+		.enabledExtensionCount	 = 0,
+		.ppEnabledExtensionNames = NULL,
+	};
+
+	culkan->result.vkResult = vkCreateInstance(&culkan->createInfo, NULL, &culkan->instance);
+	culkanCheckError(culkan);
+
+	culkanGetPhysicalDevices(culkan);
+
+	vkGetPhysicalDeviceProperties(culkan->physicalDevice, &culkan->deviceProperties);
+
+	culkan->family = 0;
+	// TODO : Choose the best queue family
+
+	culkanCheckInvocations(culkan);
+
+	vkGetPhysicalDeviceQueueFamilyProperties(culkan->physicalDevice, &culkan->queueFamilyCount, NULL);
+	culkan->queueFamilies = culkanMalloc(VkQueueFamilyProperties, culkan->queueFamilyCount);
+	vkGetPhysicalDeviceQueueFamilyProperties(culkan->physicalDevice, &culkan->queueFamilyCount, culkan->queueFamilies);
+
+	uint32_t family = 0;
+	while (family < culkan->queueFamilyCount && !(culkan->queueFamilies[family].queueFlags & VK_QUEUE_COMPUTE_BIT)) {
+		family++;
+	}
+
+	if (family == culkan->queueFamilyCount) {
+		printf("No compute queue family found\n");
+		exit(1);
+	}
+
+	culkan->queuePriorities = (float*)(float[]){1.0F}; // Obliged to do double cast because C++ won't allow it otherwise (I hate C++)
+	const VkDeviceQueueCreateInfo queueCreateInfo = {
+		.sType			  = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+		.pNext			  = NULL,
+		.flags			  = 0,
+		.queueFamilyIndex = family,
+		.queueCount		  = 1,
+		.pQueuePriorities = culkan->queuePriorities,
+	};
+
+	culkan->deviceCreateInfo = (VkDeviceCreateInfo){
+		.sType					 = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+		.pNext					 = NULL,
+		.flags					 = 0,
+		.queueCreateInfoCount	 = 1,
+		.pQueueCreateInfos		 = &queueCreateInfo,
+		.enabledLayerCount		 = 0,
+		.ppEnabledLayerNames	 = NULL,
+		.enabledExtensionCount	 = 0,
+		.ppEnabledExtensionNames = NULL,
+		.pEnabledFeatures		 = NULL,
+	};
+
+	culkan->result.vkResult = vkCreateDevice(culkan->physicalDevice, &culkan->deviceCreateInfo, NULL, &culkan->device);
+	culkanCheckError(culkan);
+
+	vkGetPhysicalDeviceMemoryProperties(culkan->physicalDevice, &culkan->memoryProperties);
+	culkanGPUAlloc(culkan);
+	culkanCheckError(culkan);
+
+	culkan->descriptorWritesVar = culkanMalloc(VkWriteDescriptorSet*, culkan->layout->bindingCount);
+	// Unitialised pointers
+
+	culkanCheckForEnoughMemory(culkan);
 	return culkan;
 }
 
@@ -374,20 +392,20 @@ void culkanSetup(Culkan* culkan) {
 
 	for (uint32_t i = 0; i < culkan->layout->bindingCount; i++) {
 		layoutBindings[i] = (VkDescriptorSetLayoutBinding){
-			.binding = i,
-			.descriptorType = (VkDescriptorType)culkan->layout->bindings[i].type, // They're the same type, so it's safe to cast.
-			.descriptorCount = 1,
-			.stageFlags = VK_SHADER_STAGE_COMPUTE_BIT,
+			.binding			= i,
+			.descriptorType		= (VkDescriptorType)culkan->layout->bindings[i].type, // They're the same type, so it's safe to cast.
+			.descriptorCount	= 1,
+			.stageFlags			= VK_SHADER_STAGE_COMPUTE_BIT,
 			.pImmutableSamplers = NULL,
 		};
 	}
 
 	culkan->descriptorSetLayoutCreateInfo = (VkDescriptorSetLayoutCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
+		.sType		  = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,
+		.pNext		  = NULL,
+		.flags		  = 0,
 		.bindingCount = culkan->layout->bindingCount,
-		.pBindings = layoutBindings,
+		.pBindings	  = layoutBindings,
 	};
 
 	culkan->result.vkResult = vkCreateDescriptorSetLayout(culkan->device, &culkan->descriptorSetLayoutCreateInfo, NULL, &culkan->descriptorSetLayout);
@@ -398,29 +416,29 @@ void culkanSetup(Culkan* culkan) {
 	culkan->pPoolSizes = culkanMalloc(VkDescriptorPoolSize, culkan->layout->bindingCount);
 	for (uint32_t i = 0; i < culkan->layout->bindingCount; i++) {
 		culkan->pPoolSizes[i] = (VkDescriptorPoolSize){
-			.type = (VkDescriptorType)culkan->layout->bindings[i].type,
+			.type			 = (VkDescriptorType)culkan->layout->bindings[i].type,
 			.descriptorCount = 1,
 		};
 	}
 
 	culkan->descriptorPoolCreateInfo = (VkDescriptorPoolCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.maxSets = 1,
+		.sType		   = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
+		.pNext		   = NULL,
+		.flags		   = 0,
+		.maxSets	   = 1,
 		.poolSizeCount = culkan->layout->bindingCount,
-		.pPoolSizes = culkan->pPoolSizes,
+		.pPoolSizes	   = culkan->pPoolSizes,
 	};
 
 	culkan->result.vkResult = vkCreateDescriptorPool(culkan->device, &culkan->descriptorPoolCreateInfo, NULL, &culkan->descriptorPool);
 	culkanCheckError(culkan);
 
 	culkan->descriptorSetAllocateInfo = (VkDescriptorSetAllocateInfo){
-		.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
-		.pNext = NULL,
-		.descriptorPool = culkan->descriptorPool,
+		.sType				= VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
+		.pNext				= NULL,
+		.descriptorPool		= culkan->descriptorPool,
 		.descriptorSetCount = 1,
-		.pSetLayouts = &culkan->descriptorSetLayout,
+		.pSetLayouts		= &culkan->descriptorSetLayout,
 	};
 
 	culkan->result.vkResult = vkAllocateDescriptorSets(culkan->device, &culkan->descriptorSetAllocateInfo, &culkan->descriptorSet);
@@ -432,13 +450,13 @@ void culkanSetup(Culkan* culkan) {
 	}
 
 	culkan->pipelineLayoutCreateInfo = (VkPipelineLayoutCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.setLayoutCount = 1,
-		.pSetLayouts = &culkan->descriptorSetLayout,
+		.sType					= VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
+		.pNext					= NULL,
+		.flags					= 0,
+		.setLayoutCount			= 1,
+		.pSetLayouts			= &culkan->descriptorSetLayout,
 		.pushConstantRangeCount = 0,
-		.pPushConstantRanges = NULL,
+		.pPushConstantRanges	= NULL,
 	};
 
 	culkan->result.vkResult = vkCreatePipelineLayout(culkan->device, &culkan->pipelineLayoutCreateInfo, NULL, &culkan->pipelineLayout);
@@ -447,43 +465,43 @@ void culkanSetup(Culkan* culkan) {
 	culkan->shaderBuffer = culkanOpenShader(culkan->shaderPath, &culkan->fileSize, culkan);
 
 	culkan->shaderModuleCreateInfo = (VkShaderModuleCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
+		.sType	  = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
+		.pNext	  = NULL,
+		.flags	  = 0,
 		.codeSize = culkan->fileSize,
-		.pCode = culkan->shaderBuffer,
+		.pCode	  = culkan->shaderBuffer,
 	};
 
 	culkan->result.vkResult = vkCreateShaderModule(culkan->device, &culkan->shaderModuleCreateInfo, NULL, &culkan->shaderModule);
 	culkanCheckError(culkan);
 
 	culkan->stageCreateInfo = (VkPipelineShaderStageCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.stage = VK_SHADER_STAGE_COMPUTE_BIT,
-		.module = culkan->shaderModule,
-		.pName = "main",
+		.sType				 = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO,
+		.pNext				 = NULL,
+		.flags				 = 0,
+		.stage				 = VK_SHADER_STAGE_COMPUTE_BIT,
+		.module				 = culkan->shaderModule,
+		.pName				 = "main",
 		.pSpecializationInfo = NULL,
 	};
 
 	culkan->pipelineCreateInfo = (VkComputePipelineCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
-		.stage = culkan->stageCreateInfo,
-		.layout = culkan->pipelineLayout,
+		.sType				= VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO,
+		.pNext				= NULL,
+		.flags				= 0,
+		.stage				= culkan->stageCreateInfo,
+		.layout				= culkan->pipelineLayout,
 		.basePipelineHandle = VK_NULL_HANDLE,
-		.basePipelineIndex = 0,
+		.basePipelineIndex	= 0,
 	};
 
 	culkan->result.vkResult = vkCreateComputePipelines(culkan->device, VK_NULL_HANDLE, 1, &culkan->pipelineCreateInfo, NULL, &culkan->pipeline);
 	culkanCheckError(culkan);
 
 	culkan->commandPoolCreateInfo = (VkCommandPoolCreateInfo){
-		.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-		.pNext = NULL,
-		.flags = 0,
+		.sType			  = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+		.pNext			  = NULL,
+		.flags			  = 0,
 		.queueFamilyIndex = culkan->family,
 	};
 
@@ -491,10 +509,10 @@ void culkanSetup(Culkan* culkan) {
 	culkanCheckError(culkan);
 
 	culkan->commandBufferAllocateInfo = (VkCommandBufferAllocateInfo){
-		.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-		.pNext = NULL,
-		.commandPool = culkan->commandPool,
-		.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+		.sType				= VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+		.pNext				= NULL,
+		.commandPool		= culkan->commandPool,
+		.level				= VK_COMMAND_BUFFER_LEVEL_PRIMARY,
 		.commandBufferCount = 1,
 	};
 
@@ -502,9 +520,9 @@ void culkanSetup(Culkan* culkan) {
 	culkanCheckError(culkan);
 
 	culkan->commandBufferBeginInfo = (VkCommandBufferBeginInfo){
-		.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-		.pNext = NULL,
-		.flags = 0,
+		.sType			  = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+		.pNext			  = NULL,
+		.flags			  = 0,
 		.pInheritanceInfo = NULL,
 	};
 
@@ -528,19 +546,19 @@ void culkanSetup(Culkan* culkan) {
 
 // TODO : Be able to choose the number of workgroups
 void culkanRun(Culkan* culkan) {
-	culkan->commandBuffers = culkanMalloc(VkCommandBuffer, 1);
+	culkan->commandBuffers	  = culkanMalloc(VkCommandBuffer, 1);
 	culkan->commandBuffers[0] = culkan->commandBuffer;
 
 	VkSubmitInfo submitInfo = {
-		.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-		.pNext = NULL,
-		.waitSemaphoreCount = 0,
-		.pWaitSemaphores = NULL,
-		.pWaitDstStageMask = NULL,
-		.commandBufferCount = 1,
-		.pCommandBuffers = culkan->commandBuffers,
+		.sType				  = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+		.pNext				  = NULL,
+		.waitSemaphoreCount	  = 0,
+		.pWaitSemaphores	  = NULL,
+		.pWaitDstStageMask	  = NULL,
+		.commandBufferCount	  = 1,
+		.pCommandBuffers	  = culkan->commandBuffers,
 		.signalSemaphoreCount = 0,
-		.pSignalSemaphores = NULL,
+		.pSignalSemaphores	  = NULL,
 	};
 
 	vkQueueSubmit(culkan->queue, 1, &submitInfo, culkan->computeFence);

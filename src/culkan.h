@@ -4,7 +4,7 @@
 /**
  * @file culkan.h
  * @brief The main header file for the Culkan library, and the API you should use.
-*/
+ */
 
 #include <stddef.h>
 #include <stdio.h>
@@ -14,7 +14,7 @@
 
 /**
  * @brief The debug flag. If defined, the library will print errors and other debug information
-*/
+ */
 #define DEBUG 1
 
 /**
@@ -30,17 +30,19 @@ typedef enum {
 
 /**
  * @brief Struct that holds the result of a function that can return an error
-*/
+ */
 typedef struct {
-	VkResult vkResult;
+	VkResult	   vkResult;
 	CulkanErrCodes ckResult;
 } CulkanResult;
 
 /**
  * @ Macro for a successful CulkanResult
-*/
-#define CULKAN_SUCCESS                                                                                                                 \
-	(CulkanResult) { VK_SUCCESS, SUCCESS }
+ */
+#define CULKAN_SUCCESS                                                                                                                               \
+	(CulkanResult) {                                                                                                                                 \
+		VK_SUCCESS, SUCCESS                                                                                                                          \
+	}
 
 /**
  * @brief Check for any errors after a Culkan function call
@@ -74,7 +76,7 @@ typedef struct {
 
 /**
  * @brief Checks for any allocation errors after a malloc call
- * 
+ *
  * If the allocation failed, it prints where the error occurred and exits the program
  * @param variable the variable to check the allocation of
  */
@@ -99,39 +101,39 @@ typedef struct {
 
 typedef struct {
 	VkBufferCreateInfo* bufferCreateInfoVar;
-	VkBuffer* vkBufferVar;
+	VkBuffer*			vkBufferVar;
 
 	VkMemoryRequirements memoryRequirementsVar;
 	VkMemoryAllocateInfo memoryAllocateInfoVar;
 
 	// TODO : see if they are needed
-	VkDevice deviceVar;
+	VkDevice	   deviceVar;
 	VkDeviceMemory deviceMemoryVar;
 
 	VkDescriptorSetLayoutBinding* layoutBindingVar;
-	VkDescriptorPoolSize* poolSizeVar;
-	VkDescriptorBufferInfo* bufferInfoVar;
+	VkDescriptorPoolSize*		  poolSizeVar;
+	VkDescriptorBufferInfo*		  bufferInfoVar;
 
 	size_t sizeOfVar;
-	void* dataVar;
+	void*  dataVar;
 } GPUVariable;
 
 typedef enum {
 	STORAGE_BUFFER = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
 	UNIFORM_BUFFER = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-	OUTPUT_BUFFER = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
+	OUTPUT_BUFFER  = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER,
 } CulkanBindingType;
 
 typedef struct {
-	size_t size;
+	size_t			  size;
 	CulkanBindingType type;
 } CulkanBinding;
 
 /*
  * Struct that holds the layout of the shader to communicate with the GPU
-*/
+ */
 typedef struct {
-	uint32_t bindingCount;
+	uint32_t	   bindingCount;
 	CulkanBinding* bindings;
 } CulkanLayout;
 
@@ -140,56 +142,56 @@ typedef struct {
 } CulkanInvocations;
 
 typedef struct {
-	const CulkanLayout* layout;
-	const char* shaderPath;
-	CulkanInvocations invocations;
-	GPUVariable* variables;
-	CulkanResult result;
-	VkApplicationInfo appInfo;
-	VkInstanceCreateInfo createInfo;
-	VkInstance instance;
-	uint32_t physicalDeviceCount;
-	VkPhysicalDevice* physicalDevices;
-	VkPhysicalDevice physicalDevice;
-	VkPhysicalDeviceProperties deviceProperties;
-	uint32_t queueFamilyCount;
-	VkQueueFamilyProperties* queueFamilies;
-	VkDeviceQueueCreateInfo queueCreateInfo;
-	uint32_t family;
-	float* queuePriorities;
-	VkDeviceCreateInfo deviceCreateInfo;
-	VkDevice device;
+	const CulkanLayout*				 layout;
+	const char*						 shaderPath;
+	CulkanInvocations				 invocations;
+	GPUVariable*					 variables;
+	CulkanResult					 result;
+	VkApplicationInfo				 appInfo;
+	VkInstanceCreateInfo			 createInfo;
+	VkInstance						 instance;
+	uint32_t						 physicalDeviceCount;
+	VkPhysicalDevice*				 physicalDevices;
+	VkPhysicalDevice				 physicalDevice;
+	VkPhysicalDeviceProperties		 deviceProperties;
+	uint32_t						 queueFamilyCount;
+	VkQueueFamilyProperties*		 queueFamilies;
+	VkDeviceQueueCreateInfo			 queueCreateInfo;
+	uint32_t						 family;
+	float*							 queuePriorities;
+	VkDeviceCreateInfo				 deviceCreateInfo;
+	VkDevice						 device;
 	VkPhysicalDeviceMemoryProperties memoryProperties;
 
 	VkDescriptorSetLayoutCreateInfo descriptorSetLayoutCreateInfo;
-	VkDescriptorSetLayout descriptorSetLayout;
-	VkDescriptorPoolSize* poolSizeInfo;
-	VkDescriptorPoolSize* pPoolSizes;
-	VkDescriptorPoolCreateInfo descriptorPoolCreateInfo;
-	VkDescriptorPool descriptorPool;
-	VkDescriptorSetAllocateInfo descriptorSetAllocateInfo;
-	VkDescriptorSet descriptorSet;
-	VkWriteDescriptorSet** descriptorWritesVar;
-	VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo;
-	VkPipelineLayout pipelineLayout;
+	VkDescriptorSetLayout			descriptorSetLayout;
+	VkDescriptorPoolSize*			poolSizeInfo;
+	VkDescriptorPoolSize*			pPoolSizes;
+	VkDescriptorPoolCreateInfo		descriptorPoolCreateInfo;
+	VkDescriptorPool				descriptorPool;
+	VkDescriptorSetAllocateInfo		descriptorSetAllocateInfo;
+	VkDescriptorSet					descriptorSet;
+	VkWriteDescriptorSet**			descriptorWritesVar;
+	VkPipelineLayoutCreateInfo		pipelineLayoutCreateInfo;
+	VkPipelineLayout				pipelineLayout;
 
-	size_t fileSize;
-	char* fileName;
+	size_t	  fileSize;
+	char*	  fileName;
 	uint32_t* shaderBuffer;
 
-	VkShaderModuleCreateInfo shaderModuleCreateInfo;
-	VkShaderModule shaderModule;
+	VkShaderModuleCreateInfo		shaderModuleCreateInfo;
+	VkShaderModule					shaderModule;
 	VkPipelineShaderStageCreateInfo stageCreateInfo;
-	VkComputePipelineCreateInfo pipelineCreateInfo;
-	VkPipeline pipeline;
+	VkComputePipelineCreateInfo		pipelineCreateInfo;
+	VkPipeline						pipeline;
 
-	VkCommandPoolCreateInfo commandPoolCreateInfo;
-	VkCommandPool commandPool;
+	VkCommandPoolCreateInfo		commandPoolCreateInfo;
+	VkCommandPool				commandPool;
 	VkCommandBufferAllocateInfo commandBufferAllocateInfo;
-	VkCommandBuffer commandBuffer;
-	VkCommandBufferBeginInfo commandBufferBeginInfo;
+	VkCommandBuffer				commandBuffer;
+	VkCommandBufferBeginInfo	commandBufferBeginInfo;
 
-	VkFence computeFence;
+	VkFence			  computeFence;
 	VkFenceCreateInfo fenceCreateInfo;
 
 	VkQueue queue;
@@ -244,7 +246,7 @@ void culkanReadBinding(Culkan* culkan, uint32_t binding, void* dst);
  * @param workGroups the number of invocations to use
  * @return the created Culkan instance
  */
-Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInvocations workGroups);
+Culkan* culkanInit(const CulkanLayout* layout, const char* shaderPath, CulkanInvocations invocations);
 
 /**
  * @brief Sets up the Culkan instance.

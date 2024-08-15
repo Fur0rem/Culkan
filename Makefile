@@ -1,17 +1,18 @@
 GLSLC = glslc
 CC = gcc
-CFLAGS = -g -Og -Wall -Wextra
+DEBUG_FLAGS = -g -Og
+RELEASE_FLAGS = -O3
+CFLAGS = $(RELEASE_FLAGS) -Wall -Wextra
 SAMPLES_DIR = samples
 
-# FIXME : wow this makefile is a mess
+culkan: src/culkan.c src/culkan.h
+	gcc -c src/culkan.c -o bin/culkan.o $(CFLAGS)
 
-#make sample_vec_add && cd samples && ./vec_add && cd ../
-sample_vec_add:
-	cd $(SAMPLES_DIR) && $(GLSLC) vec_add.comp -o vec_add.spv 
-	cd $(SAMPLES_DIR) && $(CC) $(CFLAGS) vec_add.c ../src/culkan.c -o vec_add -lvulkan
+sample_vec_add: culkan
+	cd $(SAMPLES_DIR) && $(GLSLC) vec_add.comp -o bin/vec_add.spv 
+	cd $(SAMPLES_DIR) && $(CC) $(CFLAGS) vec_add.c ../bin/culkan.o -o bin/vec_add -lvulkan
 
-# make sample_matrix_sum && cd samples && ./matrix_sum && cd ../ 
-sample_matrix_sum:
+sample_matrix_sum: culkan
 	cd $(SAMPLES_DIR) && $(GLSLC) matrix_sum.comp -o matrix_sum.spv 
 	cd $(SAMPLES_DIR) && $(CC) $(CFLAGS) matrix_sum.c ../src/culkan.c -o matrix_sum -lvulkan
 
